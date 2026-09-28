@@ -155,26 +155,30 @@
            SLIDE 1: PORTADA
       ══════════════════════════════════════════════════════════════ -->
       <section>
-        <div style="max-width: 900px;">
-          <div class="flex items-center justify-center gap-2 mb-4">
+        <div style="max-width: 960px;">
+          <div class="flex items-center justify-center gap-2 mb-3">
             <span class="slide-tag"><i class="fa-solid fa-graduation-cap"></i> CC3088</span>
             <span class="slide-tag" style="background:rgba(2,132,199,0.1);color:#0284c7;border-color:rgba(2,132,199,0.2);">Modelación y Simulación</span>
             <span class="slide-tag" style="background:rgba(5,150,105,0.1);color:#059669;border-color:rgba(5,150,105,0.2);">UVG</span>
           </div>
 
-          <h1 class="mb-2 text-indigo-700">Espacios de Estados &amp; Algoritmos de Búsqueda</h1>
-          <p class="text-slate-600 text-lg mb-6 font-medium">
-            Optimización Local con <strong class="text-indigo-600">Hill Climbing</strong> y Búsqueda Heurística con <strong class="text-cyan-600">A*</strong>
+          <h1 class="mb-2 text-indigo-700 text-2xl sm:text-4xl">Espacios de Estados &amp; Algoritmos de Búsqueda</h1>
+          <p class="text-slate-600 text-base mb-4 font-medium">
+            Optimización Local con <strong class="text-indigo-600">Hill Climbing</strong>, Búsqueda Heurística con <strong class="text-cyan-600">A*</strong> y <strong class="text-emerald-600">Flujo de Costo Mínimo (MCMF)</strong>
           </p>
 
-          <div class="grid grid-cols-2 gap-4 max-w-2xl mx-auto mt-4 text-left">
+          <div class="grid grid-cols-3 gap-3 max-w-4xl mx-auto mt-2 text-left">
             <div class="slide-card border-l-4 border-indigo-600">
-              <div class="font-bold text-sm text-indigo-900 mb-1"><i class="fa-solid fa-mountain mr-1 text-indigo-600"></i> Hill Climbing</div>
-              <p class="text-xs text-slate-500 m-0">Búsqueda local en paisajes continuos/discretos, gradientes y superación de máximos locales.</p>
+              <div class="font-bold text-xs text-indigo-900 mb-1"><i class="fa-solid fa-mountain mr-1 text-indigo-600"></i> Hill Climbing</div>
+              <p class="text-[11px] text-slate-500 m-0">Búsqueda local, gradientes y superación de máximos locales.</p>
             </div>
             <div class="slide-card border-l-4 border-cyan-600">
-              <div class="font-bold text-sm text-cyan-900 mb-1"><i class="fa-solid fa-route mr-1 text-cyan-600"></i> Algoritmo A*</div>
-              <p class="text-xs text-slate-500 m-0">Búsqueda informada, función de costo $f = g + h$, admisibilidad y grafos de navegación.</p>
+              <div class="font-bold text-xs text-cyan-900 mb-1"><i class="fa-solid fa-route mr-1 text-cyan-600"></i> Algoritmo A*</div>
+              <p class="text-[11px] text-slate-500 m-0">Búsqueda informada, función $f = g + h$ y admisibilidad.</p>
+            </div>
+            <div class="slide-card border-l-4 border-emerald-600">
+              <div class="font-bold text-xs text-emerald-900 mb-1"><i class="fa-solid fa-water mr-1 text-emerald-600"></i> Flujo &amp; Costo Mínimo</div>
+              <p class="text-[11px] text-slate-500 m-0">Redes de transporte, red residual, caminos aumentantes y Min-Cut.</p>
             </div>
           </div>
         </div>
@@ -526,7 +530,138 @@
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════
-           SLIDE 12: CONCLUSIONES Y CASOS EN MODSIM
+           SLIDE 12: MÓDULO 3: REDES DE FLUJO & COSTO MÍNIMO
+      ══════════════════════════════════════════════════════════════ -->
+      <section id="network-flow">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="slide-tag">Módulo 3</span>
+          <span class="slide-tag" style="background:rgba(5,150,105,0.1);color:#059669;">Optimización en Redes</span>
+        </div>
+        <h2>Redes de Transporte &amp; Flujo de Costo Mínimo</h2>
+        <p class="text-slate-600 text-sm max-w-2xl mb-4">
+          Modelamos el transporte de recursos continuos o discretos a través de una red dirigida $G = (V, E)$ desde una Fuente ($S$) hasta un Sumidero ($T$).
+        </p>
+
+        <div class="grid grid-cols-2 gap-4 text-left max-w-4xl">
+          <div class="slide-card border-l-4 border-emerald-600">
+            <h4 class="text-xs font-bold uppercase text-emerald-900 mb-2">1. Restricción de Capacidad</h4>
+            <div class="bg-emerald-50 text-[11px] font-mono text-emerald-950 p-2 rounded-lg mb-2">
+              0 &le; f(u, v) &le; c(u, v), &forall; (u, v) &isin; E
+            </div>
+            <p class="text-xs text-slate-600 mb-0">El flujo transportado por cualquier canal no puede exceder su capacidad física $c(u, v)$.</p>
+          </div>
+
+          <div class="slide-card border-l-4 border-emerald-600">
+            <h4 class="text-xs font-bold uppercase text-emerald-900 mb-2">2. Conservación de Flujo</h4>
+            <div class="bg-emerald-50 text-[11px] font-mono text-emerald-950 p-2 rounded-lg mb-2">
+              &sum; f(in) = &sum; f(out), &forall; v &ne; S, T
+            </div>
+            <p class="text-xs text-slate-600 mb-0">En todo nodo intermedio, la suma del flujo entrante es exactamente igual a la suma del flujo saliente (sin acumulación ni fuga).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 13: RED RESIDUAL & TEOREMA MAX-FLOW MIN-CUT
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2>Red Residual &amp; Teorema Max-Flow Min-Cut</h2>
+
+        <div class="grid grid-cols-2 gap-4 text-left max-w-4xl mt-3">
+          <div class="slide-card">
+            <h4 class="text-xs font-bold uppercase text-indigo-800 mb-1">Red Residual ($G_f$) &amp; Cancelación</h4>
+            <p class="text-xs text-slate-600 mb-2">
+              Permite redirigir flujo mediante <strong>aristas inversas</strong> con capacidad residual igual al flujo actual ($f$) y costo negativo ($-a$).
+            </p>
+            <div class="bg-indigo-50 font-mono text-[11px] text-indigo-900 p-2 rounded">
+              c_res(u,v) = c(u,v) - f(u,v)<br>
+              c_res(v,u) = f(u,v) [Costo: -cost]
+            </div>
+          </div>
+
+          <div class="slide-card border-2 border-rose-300 bg-rose-50/30">
+            <h4 class="text-xs font-bold uppercase text-rose-900 mb-1">Teorema Max-Flow Min-Cut</h4>
+            <p class="text-xs text-slate-700 mb-2">
+              El valor del flujo máximo alcanzable desde $S$ hasta $T$ es <strong>estrictamente idéntico</strong> a la capacidad del corte mínimo que desconecta a $S$ de $T$.
+            </p>
+            <div class="bg-rose-100 font-mono text-[11px] text-rose-950 p-2 rounded font-bold">
+              Max Flow = Capacidad(Min Cut)
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 14: SUCCESSIVE SHORTEST PATH (MCMF)
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2>Flujo de Costo Mínimo (MCMF)</h2>
+        <p class="text-slate-600 text-sm max-w-2xl mb-3">
+          Cuando cada arista tiene un costo unitario $a(u,v)$, minimizamos el costo total del transporte:
+        </p>
+
+        <div class="formula-box text-center shadow-md">
+          min &sum; f(u,v) &middot; a(u,v)
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-left max-w-4xl mt-3">
+          <div class="slide-card">
+            <h4 class="text-xs font-bold uppercase text-slate-700 mb-2">Algoritmo Successive Shortest Path</h4>
+            <ol class="text-xs text-slate-600 space-y-1.5 pl-4 list-decimal">
+              <li>Inicia con flujo cero ($f = 0$).</li>
+              <li>Encuentra el camino aumentante de <strong>menor costo</strong> en $G_f$ usando SPFA / Bellman-Ford.</li>
+              <li>Calcula el cuello de botella: $\Delta = \min c_{res}(u,v)$.</li>
+              <li>Aumenta flujo por $\Delta$ y actualiza aristas residuales e inversas.</li>
+              <li>Repite hasta saturar todos los caminos posibles hacia $T$.</li>
+            </ol>
+          </div>
+
+          <div class="slide-card bg-slate-900 text-slate-100 font-mono text-xs">
+            <div class="text-emerald-400 font-bold mb-2">// Pseudocódigo MCMF</div>
+            <pre class="bg-transparent border-0 p-0 text-slate-300"><code>function MIN-COST-MAX-FLOW(G, s, t):
+    initialize residual graph G_f
+    while path = SHORTEST-PATH-SPFA(G_f, s, t):
+        delta = BOTTLENECK(path)
+        AUGMENT-FLOW(path, delta)
+    return total_flow, total_cost</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 15: DEMO EN VIVO FLUJO EN REDES
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2 class="mb-1">Demo en Vivo: Flujo en Redes (MCMF)</h2>
+        <p class="text-slate-500 text-xs mb-3">Observa el envío de flujo a través de caminos aumentantes y la saturación del corte mínimo.</p>
+
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 shadow-xl max-w-4xl w-full">
+          <div class="canvas-container bg-slate-900 rounded-xl overflow-hidden" style="height: 280px;">
+            <canvas id="slideFlowCanvas" class="w-full h-full cursor-grab"></canvas>
+          </div>
+
+          <div class="flex items-center justify-between mt-3 text-xs">
+            <div class="flex items-center gap-2">
+              <button id="slideFlowBtnPlay" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-play"></i> Optimizar Flujo
+              </button>
+              <button id="slideFlowBtnReset" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition">
+                Reiniciar
+              </button>
+            </div>
+            <div class="text-slate-300 font-mono">
+              Flujo: <span id="slideFlowVal" class="text-emerald-400 font-bold">0</span> | 
+              Costo: <span id="slideFlowCost" class="text-amber-400 font-bold">$0.00</span>
+            </div>
+            <a href="demos/min-cost-max-flow.html" target="_blank" class="text-emerald-400 hover:text-emerald-300 font-semibold underline flex items-center gap-1">
+              Abrir Simulador Completo <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 16: CONCLUSIONES Y CASOS EN MODSIM
       ══════════════════════════════════════════════════════════════ -->
       <section>
         <h2>Aplicaciones en Modelación &amp; Simulación</h2>
@@ -534,42 +669,45 @@
         <div class="grid grid-cols-2 gap-4 text-left max-w-4xl mt-3">
           <div class="slide-card">
             <div class="font-bold text-sm text-indigo-900 mb-1"><i class="fa-solid fa-car mr-1 text-indigo-600"></i> Simulación de Tráfico &amp; Logística</div>
-            <p class="text-xs text-slate-600 mb-0">Enrutamiento dinámico de miles de vehículos con A* considerando costos de congestión en tiempo real.</p>
+            <p class="text-xs text-slate-600 mb-0">Enrutamiento dinámico de flotas con A* y asignación de flujos de carga máxima en redes de transporte.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="font-bold text-sm text-emerald-900 mb-1"><i class="fa-solid fa-boxes-packing mr-1 text-emerald-600"></i> Cadenas de Suministro (Supply Chain)</div>
+            <p class="text-xs text-slate-600 mb-0">Distribución de inventario desde fábricas a distribuidores con Min-Cost Max-Flow minimizando fletes.</p>
           </div>
 
           <div class="slide-card">
             <div class="font-bold text-sm text-cyan-900 mb-1"><i class="fa-solid fa-sliders mr-1 text-cyan-600"></i> Calibración de Modelos de Simulación</div>
-            <p class="text-xs text-slate-600 mb-0">Búsqueda local (Hill Climbing / Random Restart) para encontrar los mejores coeficientes de fricción o parámetros físicos.</p>
+            <p class="text-xs text-slate-600 mb-0">Búsqueda local (Hill Climbing / Random Restart) para optimizar hiperparámetros físicos y dinámicos.</p>
           </div>
 
           <div class="slide-card">
-            <div class="font-bold text-sm text-emerald-900 mb-1"><i class="fa-solid fa-robot mr-1 text-emerald-600"></i> Agentes Autónomos &amp; Videojuegos</div>
-            <p class="text-xs text-slate-600 mb-0">Navegación espacial en mallas de navegación (NavMeshes) y evasión de obstáculos con A* jerárquico.</p>
-          </div>
-
-          <div class="slide-card">
-            <div class="font-bold text-sm text-amber-900 mb-1"><i class="fa-solid fa-network-wired mr-1 text-amber-600"></i> Optimización Combinatoria</div>
-            <p class="text-xs text-slate-600 mb-0">Problema del Agente Viajero (TSP) y empaquetamiento óptimo mediante variaciones estocásticas.</p>
+            <div class="font-bold text-sm text-amber-900 mb-1"><i class="fa-solid fa-network-wired mr-1 text-amber-600"></i> Telecomunicaciones &amp; Routing</div>
+            <p class="text-xs text-slate-600 mb-0">Balanceo de tráfico de paquetes en backbones de fibra óptica evitando congestión de ancho de banda.</p>
           </div>
         </div>
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════
-           SLIDE 13: CIERRE & PREGUNTAS
+           SLIDE 17: CIERRE & PREGUNTAS
       ══════════════════════════════════════════════════════════════ -->
       <section>
-        <div style="max-width: 800px;">
+        <div style="max-width: 900px;">
           <h1 class="text-indigo-700 mb-3">¿Preguntas o Dudas?</h1>
           <p class="text-slate-600 text-base mb-6">
-            Explora libremente los simuladores y experimenta cambiando los parámetros de búsqueda.
+            Explora libremente los simuladores interactivos para afianzar cada algoritmo.
           </p>
 
-          <div class="flex justify-center gap-4">
+          <div class="flex flex-wrap justify-center gap-3">
             <a href="demos/hill-climbing.html" target="_blank" style="color: #ffffff !important;" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
               <i class="fa-solid fa-mountain text-white"></i> <span style="color: #ffffff !important;">Simulador Hill Climbing</span>
             </a>
             <a href="demos/a-star.html" target="_blank" style="color: #ffffff !important;" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
               <i class="fa-solid fa-route text-white"></i> <span style="color: #ffffff !important;">Simulador A* Pathfinding</span>
+            </a>
+            <a href="demos/min-cost-max-flow.html" target="_blank" style="color: #ffffff !important;" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
+              <i class="fa-solid fa-water text-white"></i> <span style="color: #ffffff !important;">Simulador Flujo MCMF</span>
             </a>
             <a href="index.html" style="color: #ffffff !important;" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
               <i class="fa-solid fa-house text-white"></i> <span style="color: #ffffff !important;">Volver al Portal</span>
@@ -590,6 +728,7 @@
   <script type="module">
     import { HillVisualizer } from './js/visualizers/hill-visualizer.js';
     import { GridVisualizer } from './js/visualizers/grid-visualizer.js';
+    import { FlowVisualizer } from './js/visualizers/flow-visualizer.js';
 
     Reveal.initialize({
       hash: true,
@@ -688,6 +827,42 @@
       });
     }
 
+    // 3. Embedded Slide Flow Mini-Visualizer
+    const slideFlowCanvas = document.getElementById('slideFlowCanvas');
+    const slideFlowBtnPlay = document.getElementById('slideFlowBtnPlay');
+    const slideFlowBtnReset = document.getElementById('slideFlowBtnReset');
+    const slideFlowVal = document.getElementById('slideFlowVal');
+    const slideFlowCost = document.getElementById('slideFlowCost');
+
+    let slideFlowVis = null;
+    if (slideFlowCanvas) {
+      slideFlowVis = new FlowVisualizer(slideFlowCanvas, {
+        speed: 800,
+        onTelemetryUpdate: (data) => {
+          slideFlowVal.textContent = data.totalFlow;
+          slideFlowCost.textContent = `$${data.totalCost.toFixed(2)}`;
+          if (data.status === 'optimal_flow_reached') {
+            slideFlowBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Optimizar Flujo';
+          }
+        }
+      });
+
+      slideFlowBtnPlay.addEventListener('click', () => {
+        if (slideFlowVis.isRunning) {
+          slideFlowVis.pause();
+          slideFlowBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Optimizar Flujo';
+        } else {
+          slideFlowVis.play();
+          slideFlowBtnPlay.innerHTML = '<i class="fa-solid fa-pause"></i> Pausar';
+        }
+      });
+
+      slideFlowBtnReset.addEventListener('click', () => {
+        slideFlowVis.reset();
+        slideFlowBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Optimizar Flujo';
+      });
+    }
+
     // Re-render canvases on slide change so HighDPI coordinates stay sharp
     Reveal.on('slidechanged', () => {
       if (slideHillVis) {
@@ -697,6 +872,10 @@
       if (slideGridVis) {
         slideGridVis.initCanvas();
         slideGridVis.render();
+      }
+      if (slideFlowVis) {
+        slideFlowVis.initCanvas();
+        slideFlowVis.render();
       }
     });
   </script>

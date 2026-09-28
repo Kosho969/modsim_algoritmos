@@ -5,6 +5,7 @@
 import { HillClimbingOptimizer, LANDSCAPES } from './js/algorithms/hill-climbing.js';
 import { AStarSolver, CELL_TYPES, CELL_COSTS, HEURISTICS } from './js/algorithms/a-star.js';
 import { MazeGenerator } from './js/algorithms/maze-generator.js';
+import { MinCostMaxFlowSolver, FLOW_PRESETS } from './js/algorithms/min-cost-flow.js';
 
 let passed = 0;
 let failed = 0;
@@ -111,6 +112,51 @@ console.log('\n--- Testing Maze & Preset Generators ---');
     }
   }
   assert(hasMud && hasWater, 'Swamp generator creates Mud and Water cells');
+}
+
+console.log('\n--- Testing Min-Cost Max-Flow (MCMF) Solver ---');
+{
+  // 1. Classic Diamond Network Test
+  const solver = new MinCostMaxFlowSolver(FLOW_PRESETS.diamond);
+  const tel = solver.runToCompletion();
+
+  assert(tel.status === 'optimal_flow_reached', 'MCMF solver terminates with optimal_flow_reached');
+  assert(tel.totalFlow === 6, `Diamond network max flow is 6 (got ${tel.totalFlow})`);
+  assert(tel.totalCost === 20, `Diamond network min cost is $20.00 (got $${tel.totalCost})`);
+
+  // 2. Test Flow Conservation at transit nodes
+  let conservationPassed = true;
+  for (const node of tel.nodes) {
+    if (node.id !== tel.sourceId && node.id !== tel.sinkId) {
+      const bal = solver.getNodeBalance(node.id);
+      if (Math.abs(bal.net) > 1e-6) {
+        conservationPassed = false;
+        console.error(`Flow conservation violated at node ${node.id}: in=${bal.inFlow}, out=${bal.outFlow}`);
+      }
+    }
+  }
+  assert(conservationPassed, 'Flow conservation (sum in = sum out) holds at all intermediate nodes');
+
+  // 3. Test Capacity Constraints
+  let capacityValid = true;
+  for (const e of tel.edges) {
+    if (e.flow < -1e-6 || e.flow > e.capacity + 1e-6) {
+      capacityValid = false;
+      console.error(`Capacity constraint violated on edge ${e.u}->${e.v}: flow=${e.flow}, cap=${e.capacity}`);
+    }
+  }
+  assert(capacityValid, 'Capacity constraints (0 <= flow <= capacity) respected on all edges');
+
+  // 4. Test Min-Cut Theorem
+  const minCutCapacity = tel.minCutEdges.reduce((sum, e) => sum + e.capacity, 0);
+  assert(minCutCapacity === tel.totalFlow, `Max-Flow Min-Cut theorem verified: Flow (${tel.totalFlow}) == Min-Cut Capacity (${minCutCapacity})`);
+
+  // 5. Supply Chain Preset Test
+  const supplySolver = new MinCostMaxFlowSolver(FLOW_PRESETS.supplyChain);
+  const supplyTel = supplySolver.runToCompletion();
+  assert(supplyTel.status === 'optimal_flow_reached', 'Supply Chain network reaches optimal flow');
+  assert(supplyTel.totalFlow === 17, `Supply Chain network delivers max flow of 17 (got ${supplyTel.totalFlow})`);
+  assert(supplyTel.totalCost > 0, `Supply Chain network computes valid positive min cost ($${supplyTel.totalCost})`);
 }
 
 console.log(`\n========================================`);

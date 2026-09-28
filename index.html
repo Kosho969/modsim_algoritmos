@@ -30,7 +30,7 @@
       </h1>
 
       <p class="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto mb-8 font-normal leading-relaxed">
-        Plataforma docente interactiva para el estudio y visualización de <strong class="text-white font-semibold">Hill Climbing</strong> (Optimización Local) y el <strong class="text-cyan-300 font-semibold">Algoritmo A*</strong> (Búsqueda Heurística).
+        Plataforma docente interactiva para el estudio y visualización de <strong class="text-white font-semibold">Hill Climbing</strong> (Optimización Local), <strong class="text-cyan-300 font-semibold">Algoritmo A*</strong> (Búsqueda Heurística) y <strong class="text-emerald-300 font-semibold">Flujo de Costo Mínimo</strong> (Optimización en Redes).
       </p>
 
       <!-- Topic Tags -->
@@ -42,35 +42,41 @@
           <i class="fa-solid fa-route text-cyan-400"></i> Algoritmo A*
         </span>
         <span class="bg-white/10 text-slate-200 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
-          <i class="fa-solid fa-square-root-variable text-emerald-400"></i> f(n) = g(n) + h(n)
+          <i class="fa-solid fa-water text-emerald-400"></i> Flujo &amp; Costo Mínimo
         </span>
         <span class="bg-white/10 text-slate-200 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
-          <i class="fa-solid fa-dice text-amber-400"></i> Random-Restart
+          <i class="fa-solid fa-square-root-variable text-amber-400"></i> f(n) = g(n) + h(n)
         </span>
         <span class="bg-white/10 text-slate-200 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
-          <i class="fa-solid fa-compass text-rose-400"></i> Admisibilidad &amp; Consistencia
+          <i class="fa-solid fa-scissors text-rose-400"></i> Max-Flow Min-Cut
         </span>
       </div>
 
       <!-- Action Buttons CTA -->
-      <div class="flex flex-wrap justify-center gap-4">
+      <div class="flex flex-wrap justify-center gap-3">
         <a href="presentation.html"
            target="_blank"
-           class="bg-white text-indigo-900 hover:bg-slate-100 font-bold px-6 py-3.5 rounded-xl text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+           class="bg-white text-indigo-900 hover:bg-slate-100 font-bold px-5 py-3 rounded-xl text-xs sm:text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
           <i class="fa-solid fa-person-chalkboard text-indigo-600"></i>
-          <span>Ver Presentación de Clase</span>
+          <span>Ver Presentación</span>
         </a>
 
         <a href="demos/a-star.html"
-           class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-5 py-3.5 rounded-xl text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+           class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-4 py-3 rounded-xl text-xs sm:text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
           <i class="fa-solid fa-route"></i>
-          <span>Simulador A* Pathfinding</span>
+          <span>Simulador A*</span>
         </a>
 
         <a href="demos/hill-climbing.html"
-           class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-3.5 rounded-xl text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+           class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-3 rounded-xl text-xs sm:text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
           <i class="fa-solid fa-mountain"></i>
           <span>Simulador Hill Climbing</span>
+        </a>
+
+        <a href="demos/min-cost-max-flow.html"
+           class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-3 rounded-xl text-xs sm:text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+          <i class="fa-solid fa-water"></i>
+          <span>Simulador Flujo MCMF</span>
         </a>
       </div>
 
@@ -87,67 +93,97 @@
         <p class="text-slate-600 text-sm">Laboratorios interactivos diseñados para experimentar con parámetros, observar paso a paso el comportamiento algorítmico y analizar casos de fallo.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         <!-- Showcase Card: A* -->
-        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-full -mr-10 -mt-10 pointer-events-none"></div>
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-50 rounded-full -mr-8 -mt-8 pointer-events-none"></div>
           <div>
-            <div class="flex items-center justify-between mb-4">
-              <span class="inline-flex items-center gap-1.5 bg-cyan-100 text-cyan-800 text-xs font-mono font-bold px-3 py-1 rounded-full">
+            <div class="flex items-center justify-between mb-3">
+              <span class="inline-flex items-center gap-1.5 bg-cyan-100 text-cyan-800 text-xs font-mono font-bold px-2.5 py-0.5 rounded-full">
                 <i class="fa-solid fa-route"></i> Búsqueda Heurística
               </span>
-              <span class="text-xs font-mono text-slate-400">Cuadrícula 2D</span>
+              <span class="text-[11px] font-mono text-slate-400">Cuadrícula 2D</span>
             </div>
 
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Simulador de Algoritmo A*</h3>
-            <p class="text-slate-600 text-xs leading-relaxed mb-4">
-              Visualiza en tiempo real la expansión de la frontera <strong class="text-cyan-700 font-mono">f(n) = g(n) + h(n)</strong>. Dibuja muros y terrenos con costos ponderados (barro 3x, agua 5x), compara contra Dijkstra y Greedy Best-First, y prueba laberintos complejos.
+            <h3 class="text-lg font-bold text-slate-900 mb-1.5">Algoritmo A*</h3>
+            <p class="text-slate-600 text-xs leading-relaxed mb-3">
+              Expansión en tiempo real con <strong class="text-cyan-700 font-mono">f(n) = g(n) + h(n)</strong>, terrenos ponderados (barro 3x, agua 5x), laberintos y cola de prioridad MinHeap.
             </p>
 
-            <ul class="text-xs text-slate-600 space-y-1.5 mb-6 pl-4 list-disc">
-              <li>Cálculo numérico de $g, h, f$ visible en cada celda.</li>
-              <li>Heurísticas: Manhattan, Euclidiana, Chebyshev y Dijkstra ($h=0$).</li>
-              <li>Generador de laberintos, trampas cóncavas y terrenos mixtos.</li>
-              <li>Inspección en vivo de la Cola de Prioridad (MinHeap).</li>
+            <ul class="text-xs text-slate-500 space-y-1 mb-5 pl-4 list-disc">
+              <li>Cálculo visible de $g, h, f$ por celda.</li>
+              <li>Heurísticas: Manhattan, Euclidiana, Chebyshev.</li>
+              <li>Comparativa contra Dijkstra y Greedy.</li>
             </ul>
           </div>
 
-          <a href="demos/a-star.html" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 px-4 rounded-xl text-xs text-center transition flex items-center justify-center gap-2">
+          <a href="demos/a-star.html" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2 px-3 rounded-xl text-xs text-center transition flex items-center justify-center gap-1.5">
             <span>Abrir Simulador A*</span>
-            <i class="fa-solid fa-arrow-right text-[11px]"></i>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </a>
         </div>
 
         <!-- Showcase Card: Hill Climbing -->
-        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full -mr-10 -mt-10 pointer-events-none"></div>
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-full -mr-8 -mt-8 pointer-events-none"></div>
           <div>
-            <div class="flex items-center justify-between mb-4">
-              <span class="inline-flex items-center gap-1.5 bg-indigo-100 text-indigo-800 text-xs font-mono font-bold px-3 py-1 rounded-full">
+            <div class="flex items-center justify-between mb-3">
+              <span class="inline-flex items-center gap-1.5 bg-indigo-100 text-indigo-800 text-xs font-mono font-bold px-2.5 py-0.5 rounded-full">
                 <i class="fa-solid fa-mountain"></i> Búsqueda Local
               </span>
-              <span class="text-xs font-mono text-slate-400">Paisaje Continuo</span>
+              <span class="text-[11px] font-mono text-slate-400">Paisaje Continuo</span>
             </div>
 
-            <h3 class="text-xl font-bold text-slate-900 mb-2">Simulador de Hill Climbing</h3>
-            <p class="text-slate-600 text-xs leading-relaxed mb-4">
-              Experimenta con la ascensión de gradiente en paisajes de optimización multi-pico, mesetas planas y crestas. Descubre de forma visual cómo el agente queda atrapado en óptimos locales y cómo solucionarlo con reinicios aleatorios.
+            <h3 class="text-lg font-bold text-slate-900 mb-1.5">Hill Climbing</h3>
+            <p class="text-slate-600 text-xs leading-relaxed mb-3">
+              Ascensión de gradiente en paisajes multi-pico, mesetas y trampas de máximos locales con sondas de vecindario y telemetría.
             </p>
 
-            <ul class="text-xs text-slate-600 space-y-1.5 mb-6 pl-4 list-disc">
-              <li>Haz click en cualquier punto del paisaje para mover al agente.</li>
-              <li>Variantes: Steepest Ascent, First-Choice, Stochastic y Random-Restart.</li>
-              <li>Visualización de evaluación de vecindarios y sondas de paso $\delta$.</li>
-              <li>Telemetría en tiempo real: $x$, $f(x)$, iteraciones y mejor fitness histórico.</li>
+            <ul class="text-xs text-slate-500 space-y-1 mb-5 pl-4 list-disc">
+              <li>Click interactivo para ubicar $x_0$.</li>
+              <li>Variantes: Steepest, Stochastic, Random-Restart.</li>
+              <li>Seguimiento del mejor fitness histórico.</li>
             </ul>
           </div>
 
-          <a href="demos/hill-climbing.html" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 px-4 rounded-xl text-xs text-center transition flex items-center justify-center gap-2">
-            <span>Abrir Simulador Hill Climbing</span>
-            <i class="fa-solid fa-arrow-right text-[11px]"></i>
+          <a href="demos/hill-climbing.html" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-3 rounded-xl text-xs text-center transition flex items-center justify-center gap-1.5">
+            <span>Abrir Simulador HC</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </a>
         </div>
+
+        <!-- Showcase Card: Min-Cost Max-Flow -->
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-full -mr-8 -mt-8 pointer-events-none"></div>
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-xs font-mono font-bold px-2.5 py-0.5 rounded-full">
+                <i class="fa-solid fa-water"></i> Optimización en Redes
+              </span>
+              <span class="text-[11px] font-mono text-slate-400">Grafos Dirigidos</span>
+            </div>
+
+            <h3 class="text-lg font-bold text-slate-900 mb-1.5">Flujo &amp; Costo Mínimo</h3>
+            <p class="text-slate-600 text-xs leading-relaxed mb-3">
+              Transporte de recursos a través de redes dirigidas con restricciones de capacidad, costos unitarios, caminos aumentantes y Min-Cut.
+            </p>
+
+            <ul class="text-xs text-slate-500 space-y-1 mb-5 pl-4 list-disc">
+              <li>Nodos y tuberías arrastrables e interactivas.</li>
+              <li>Algoritmo Successive Shortest Path (SPFA).</li>
+              <li>Cálculo automático de Corte Mínimo saturado.</li>
+            </ul>
+          </div>
+
+          <a href="demos/min-cost-max-flow.html" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 px-3 rounded-xl text-xs text-center transition flex items-center justify-center gap-1.5">
+            <span>Abrir Simulador Flujo</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+
+      </div>
+    </section>
 
       </div>
     </section>
@@ -227,6 +263,17 @@
           <span class="text-[11px] font-mono text-amber-600 font-semibold">Probabilidad 1 - (1-p)^k</span>
         </div>
 
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg mb-4">
+            <i class="fa-solid fa-water"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-sm mb-1.5">Redes de Flujo &amp; Min-Cut</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Leyes de conservación y capacidad, aristas inversas residuales para re-enrutamiento y equivalencia Max-Flow / Min-Cut.
+          </p>
+          <span class="text-[11px] font-mono text-emerald-600 font-semibold">MCMF • Successive SPFA</span>
+        </div>
+
       </div>
     </section>
 
@@ -290,6 +337,14 @@
               <td class="p-4 text-emerald-600 font-bold">Sí</td>
               <td class="p-4 text-emerald-600 font-bold">Sí (Con $h$ admisible)</td>
             </tr>
+            <tr class="hover:bg-emerald-50/40 bg-emerald-50/20 font-semibold">
+              <td class="p-4 font-bold text-emerald-950">Min-Cost Max-Flow (MCMF)</td>
+              <td class="p-4 text-emerald-900">Caminos Aumentantes (SPFA)</td>
+              <td class="p-4 font-mono text-emerald-900">$O(F \cdot |V| \cdot |E|)$</td>
+              <td class="p-4 font-mono text-emerald-900">$O(|V| + |E|)$</td>
+              <td class="p-4 text-emerald-600 font-bold">Sí</td>
+              <td class="p-4 text-emerald-600 font-bold">Sí (Flujo Máx y Costo Mín)</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -299,7 +354,7 @@
 
   <!-- ── FOOTER ── -->
   <footer class="border-t border-slate-200 bg-white py-8 px-4 text-center text-xs text-slate-500">
-    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center space-x-2">
         <i class="fa-solid fa-graduation-cap text-indigo-600 text-sm"></i>
         <span><strong>Modelación y Simulación</strong> — Universidad del Valle de Guatemala</span>
@@ -308,6 +363,7 @@
         <a href="presentation.html" target="_blank" class="hover:text-indigo-600 transition">Presentación</a>
         <a href="demos/a-star.html" class="hover:text-cyan-600 transition">Simulador A*</a>
         <a href="demos/hill-climbing.html" class="hover:text-indigo-600 transition">Simulador Hill Climbing</a>
+        <a href="demos/min-cost-max-flow.html" class="hover:text-emerald-600 transition font-semibold text-emerald-700">Simulador Flujo MCMF</a>
         <a href="https://github.com/menene/modsim" target="_blank" class="hover:text-slate-900 transition flex items-center gap-1">
           <i class="fa-brands fa-github text-sm"></i> GitHub
         </a>
