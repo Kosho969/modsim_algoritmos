@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelación y Simulación — Hill Climbing & A* Search</title>
+
+  <!-- FontAwesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: { preflight: false },
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Montserrat', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Reveal.js & Plugins -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/atom-one-light.min.css">
+
+  <style>
+    :root {
+      --r-main-font-size: 26px;
+      --primary: #4338ca;
+      --primary-light: #6366f1;
+      --cyan: #0284c7;
+      --emerald: #059669;
+      --amber: #d97706;
+      --rose: #dc2626;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+
+    .reveal-viewport { background: var(--bg); }
+    .reveal { font-family: 'Inter', sans-serif; color: var(--text); }
+    
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      font-family: 'Montserrat', sans-serif;
+      text-transform: none;
+      letter-spacing: -0.01em;
+      font-weight: 800;
+    }
+
+    .reveal h1 { color: var(--primary); font-size: 2.2em; }
+    .reveal h2 { color: var(--primary); font-size: 1.4em; }
+    .reveal h3 { color: var(--cyan); font-size: 1.1em; }
+
+    .reveal code { font-family: 'Fira Code', monospace; }
+    .reveal pre {
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid rgba(99,102,241,0.2);
+      overflow: hidden;
+      max-height: none;
+      background: #ffffff;
+      width: 100%;
+    }
+    .reveal pre code { font-size: 0.78em; line-height: 1.5; padding: 1.2rem; }
+
+    /* Slide layout */
+    .reveal .slides > section,
+    .reveal .slides > section > section {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      display: flex !important;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .reveal .slides .text-left { text-align: left; }
+    .reveal .slides .grid { width: 100%; }
+
+    .slide-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 1.2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      text-align: left;
+    }
+
+    .slide-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: rgba(99,102,241,0.1);
+      color: var(--primary);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 999px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.7rem;
+      font-family: 'Fira Code', monospace;
+      font-weight: 600;
+    }
+
+    .formula-box {
+      background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+      border: 1.5px solid #c7d2fe;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 1.1em;
+      color: #312e81;
+      font-weight: bold;
+      display: inline-block;
+      margin: 0.5rem 0;
+    }
+
+    ul.pros, ul.cons { list-style: none; text-align: left; padding: 0; }
+    ul.pros li::before { content: '✓ '; color: var(--emerald); font-weight: bold; }
+    ul.cons li::before { content: '✗ '; color: var(--rose); font-weight: bold; }
+    ul.pros li, ul.cons li { margin: 0.35em 0; font-size: 0.85em; }
+  </style>
+</head>
+<body>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 1: PORTADA
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <div style="max-width: 900px;">
+          <div class="flex items-center justify-center gap-2 mb-4">
+            <span class="slide-tag"><i class="fa-solid fa-graduation-cap"></i> CC3088</span>
+            <span class="slide-tag" style="background:rgba(2,132,199,0.1);color:#0284c7;border-color:rgba(2,132,199,0.2);">Modelación y Simulación</span>
+            <span class="slide-tag" style="background:rgba(5,150,105,0.1);color:#059669;border-color:rgba(5,150,105,0.2);">UVG</span>
+          </div>
+
+          <h1 class="mb-2 text-indigo-700">Espacios de Estados &amp; Algoritmos de Búsqueda</h1>
+          <p class="text-slate-600 text-lg mb-6 font-medium">
+            Optimización Local con <strong class="text-indigo-600">Hill Climbing</strong> y Búsqueda Heurística con <strong class="text-cyan-600">A*</strong>
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 max-w-2xl mx-auto mt-4 text-left">
+            <div class="slide-card border-l-4 border-indigo-600">
+              <div class="font-bold text-sm text-indigo-900 mb-1"><i class="fa-solid fa-mountain mr-1 text-indigo-600"></i> Hill Climbing</div>
+              <p class="text-xs text-slate-500 m-0">Búsqueda local en paisajes continuos/discretos, gradientes y superación de máximos locales.</p>
+            </div>
+            <div class="slide-card border-l-4 border-cyan-600">
+              <div class="font-bold text-sm text-cyan-900 mb-1"><i class="fa-solid fa-route mr-1 text-cyan-600"></i> Algoritmo A*</div>
+              <p class="text-xs text-slate-500 m-0">Búsqueda informada, función de costo $f = g + h$, admisibilidad y grafos de navegación.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 2: INTRODUCCIÓN A ESPACIOS DE ESTADOS
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2 class="mb-2">¿Qué es un Problema de Búsqueda?</h2>
+        <p class="text-slate-500 text-sm mb-5">En simulación e inteligencia artificial, formalizamos un problema mediante 5 componentes esenciales:</p>
+
+        <div class="grid grid-cols-3 gap-3 text-left max-w-4xl">
+          <div class="slide-card">
+            <span class="font-mono text-indigo-600 font-bold text-xs">1. Estado Inicial</span>
+            <p class="text-xs text-slate-600 mt-1 mb-0">La configuración o punto de partida del agente en el sistema ($s_0 \in S$).</p>
+          </div>
+          <div class="slide-card">
+            <span class="font-mono text-indigo-600 font-bold text-xs">2. Acciones Posibles</span>
+            <p class="text-xs text-slate-600 mt-1 mb-0">Conjunto de movimientos o decisiones válidas en un estado dado ($Actions(s)$).</p>
+          </div>
+          <div class="slide-card">
+            <span class="font-mono text-indigo-600 font-bold text-xs">3. Modelo de Transición</span>
+            <p class="text-xs text-slate-600 mt-1 mb-0">Describe qué nuevo estado se obtiene al ejecutar una acción ($Result(s, a)$).</p>
+          </div>
+          <div class="slide-card">
+            <span class="font-mono text-cyan-600 font-bold text-xs">4. Test de Meta / Objetivo</span>
+            <p class="text-xs text-slate-600 mt-1 mb-0">Condición que determina si un estado es una solución o el óptimo buscado.</p>
+          </div>
+          <div class="slide-card">
+            <span class="font-mono text-cyan-600 font-bold text-xs">5. Función de Costo / Fitness</span>
+            <p class="text-xs text-slate-600 mt-1 mb-0">Costo acumulado $c(s, a, s')$ o valor de evaluación $f(s)$ a maximizar o minimizar.</p>
+          </div>
+          <div class="slide-card bg-indigo-50 border-indigo-200">
+            <span class="font-mono text-indigo-800 font-bold text-xs">Meta del Algoritmo</span>
+            <p class="text-xs text-indigo-900 mt-1 mb-0 font-medium">Encontrar la secuencia óptima de acciones o el estado con mayor calidad.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 3: HILL CLIMBING — INTUICIÓN
+      ══════════════════════════════════════════════════════════════ -->
+      <section id="hill-climbing">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="slide-tag">Módulo 1</span>
+          <span class="slide-tag" style="background:rgba(79,70,229,0.1);color:#4338ca;">Búsqueda Local</span>
+        </div>
+        <h2>Hill Climbing (Ascensión de Colinas)</h2>
+        <p class="text-slate-600 text-sm max-w-2xl mb-4">
+          La analogía clásica: <em>«Escalar una montaña en medio de una niebla espesa»</em>. No conocemos todo el mapa; sólo podemos dar pasos en la dirección de mayor elevación inmediata.
+        </p>
+
+        <div class="grid grid-cols-2 gap-4 text-left max-w-4xl">
+          <div class="slide-card">
+            <h4 class="text-xs font-bold uppercase text-slate-700 mb-2">Principio de Operación</h4>
+            <ul class="text-xs text-slate-600 space-y-1.5 pl-4 list-disc">
+              <li>Mantiene en memoria únicamente el <strong>estado actual</strong> (consumo de memoria $O(1)$).</li>
+              <li>Genera los vecinos inmediatos en el espacio de búsqueda ($s'$).</li>
+              <li>Avanza siempre al vecino que produzca una mejora estricta ($f(s') > f(s)$).</li>
+              <li>Se detiene cuando ningún vecino inmediato supera al estado actual.</li>
+            </ul>
+          </div>
+
+          <div class="slide-card bg-slate-900 text-slate-100 font-mono text-xs">
+            <div class="text-indigo-400 font-bold mb-2">// Pseudocódigo Steepest-Ascent</div>
+            <pre class="bg-transparent border-0 p-0 text-slate-300"><code>function HILL-CLIMBING(problem):
+    current = problem.INITIAL-STATE
+    loop:
+        neighbor = BEST-NEIGHBOR(current)
+        if VALUE(neighbor) &lt;= VALUE(current):
+            return current.STATE
+        current = neighbor</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 4: HILL CLIMBING — LOS 3 GRANDES RETOS
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2>Las 3 Trampas de Hill Climbing</h2>
+        <p class="text-slate-500 text-sm mb-4">La miopía del algoritmo voraz ocasiona fallas en paisajes complejos:</p>
+
+        <div class="grid grid-cols-3 gap-3 text-left max-w-4xl">
+          <div class="slide-card border-t-4 border-rose-500">
+            <div class="text-rose-600 font-bold text-sm mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Máximos Locales</div>
+            <p class="text-xs text-slate-600 mb-2">Una cima más alta que todos sus vecinos inmediatos, pero inferior al óptimo global.</p>
+            <div class="bg-rose-50 text-[11px] text-rose-800 p-2 rounded-lg font-mono">
+              f(vecinos) &lt; f(actual) &lt; f(óptimo)
+            </div>
+          </div>
+
+          <div class="slide-card border-t-4 border-amber-500">
+            <div class="text-amber-600 font-bold text-sm mb-1"><i class="fa-solid fa-water mr-1"></i> Mesetas (Plateaus)</div>
+            <p class="text-xs text-slate-600 mb-2">Una región plana donde todos los vecinos tienen exactamente el mismo valor de evaluación.</p>
+            <div class="bg-amber-50 text-[11px] text-amber-800 p-2 rounded-lg font-mono">
+              Gradiente = 0 (Sin dirección)
+            </div>
+          </div>
+
+          <div class="slide-card border-t-4 border-indigo-500">
+            <div class="text-indigo-600 font-bold text-sm mb-1"><i class="fa-solid fa-mountain mr-1"></i> Crestas (Ridges)</div>
+            <p class="text-xs text-slate-600 mb-2">Una secuencia de máximos locales en pendiente donde los pasos ortogonales bajan bruscamente.</p>
+            <div class="bg-indigo-50 text-[11px] text-indigo-800 p-2 rounded-lg font-mono">
+              Requiere pasos diagonales
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 5: VARIANTES DE HILL CLIMBING
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2>Variantes para Superar las Trampas</h2>
+
+        <div class="grid grid-cols-2 gap-4 text-left max-w-4xl mt-2">
+          <div class="slide-card">
+            <h4 class="text-xs font-bold uppercase text-indigo-700 mb-1">1. Stochastic Hill Climbing</h4>
+            <p class="text-xs text-slate-600 mb-2">Elige aleatoriamente entre los vecinos que mejoran la función, ponderando por la magnitud de mejora.</p>
+            <p class="text-[11px] text-slate-500 italic mb-0">Evita seguir ciegamente el gradiente más empinado cuando este lleva a una trampa local.</p>
+          </div>
+
+          <div class="slide-card">
+            <h4 class="text-xs font-bold uppercase text-indigo-700 mb-1">2. First-Choice Hill Climbing</h4>
+            <p class="text-xs text-slate-600 mb-2">Genera vecinos al azar uno por uno y acepta inmediatamente el primero que sea mejor que el actual.</p>
+            <p class="text-[11px] text-slate-500 italic mb-0">Excelente cuando el espacio de vecinos es masivo (miles de ramas).</p>
+          </div>
+
+          <div class="slide-card border-2 border-emerald-400 bg-emerald-50/40">
+            <h4 class="text-xs font-bold uppercase text-emerald-800 mb-1">3. Random-Restart Hill Climbing</h4>
+            <p class="text-xs text-emerald-950 mb-2">Ejecuta múltiples búsquedas independientes desde estados iniciales generados al azar, almacenando el mejor histórico.</p>
+            <div class="text-[11px] font-mono text-emerald-900 bg-emerald-100/70 p-1.5 rounded">
+              P(éxito tras k intentos) = 1 - (1 - p)^k
+            </div>
+          </div>
+
+          <div class="slide-card">
+            <h4 class="text-xs font-bold uppercase text-indigo-700 mb-1">4. Simulated Annealing</h4>
+            <p class="text-xs text-slate-600 mb-2">Inspirado en el recocido de metales. Acepta movimientos hacia abajo con probabilidad $e^{\Delta E / T}$.</p>
+            <p class="text-[11px] text-slate-500 italic mb-0">Permite "escapar" activamente de los valles locales a altas temperaturas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 6: DEMO EN VIVO HILL CLIMBING
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2 class="mb-1">Demo en Vivo: Hill Climbing</h2>
+        <p class="text-slate-500 text-xs mb-3">Observa el ascenso por el gradiente y cómo el punto de inicio determina si cae en un óptimo local.</p>
+
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 shadow-xl max-w-4xl w-full">
+          <div class="canvas-container bg-white rounded-xl overflow-hidden" style="height: 280px;">
+            <canvas id="slideHillCanvas" class="w-full h-full cursor-pointer"></canvas>
+          </div>
+
+          <div class="flex items-center justify-between mt-3 text-xs">
+            <div class="flex items-center gap-2">
+              <button id="slideHillBtnPlay" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-play"></i> Iniciar
+              </button>
+              <button id="slideHillBtnReset" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition">
+                Reiniciar
+              </button>
+            </div>
+            <div class="text-slate-300 font-mono">
+              Fitness: <span id="slideHillFitness" class="text-emerald-400 font-bold">0.00</span> | 
+              Estado: <span id="slideHillStatus" class="text-cyan-400">Listo</span>
+            </div>
+            <a href="demos/hill-climbing.html" target="_blank" class="text-indigo-400 hover:text-indigo-300 font-semibold underline flex items-center gap-1">
+              Abrir Simulador Completo <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 7: ALGORITMO A* — INTRODUCCIÓN Y FÓRMULA
+      ══════════════════════════════════════════════════════════════ -->
+      <section id="a-star">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="slide-tag">Módulo 2</span>
+          <span class="slide-tag" style="background:rgba(2,132,199,0.1);color:#0284c7;">Búsqueda Heurística</span>
+        </div>
+        <h2>Algoritmo A* (A-Estrella)</h2>
+        <p class="text-slate-600 text-sm max-w-2xl mb-3">
+          Desarrollado en 1968 por Hart, Nilsson y Raphael. Es el algoritmo de búsqueda de caminos óptimos más utilizado en simulación, videojuegos y robótica.
+        </p>
+
+        <div class="formula-box text-center shadow-md">
+          f(n) = g(n) + h(n)
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 text-left max-w-4xl mt-3">
+          <div class="slide-card border-l-4 border-indigo-600">
+            <div class="font-bold text-xs text-indigo-900">g(n) = Costo Exacto</div>
+            <p class="text-xs text-slate-600 mt-1 mb-0">Costo real acumulado para viajar desde el nodo inicial hasta el nodo actual $n$.</p>
+          </div>
+          <div class="slide-card border-l-4 border-cyan-600">
+            <div class="font-bold text-xs text-cyan-900">h(n) = Heurística</div>
+            <p class="text-xs text-slate-600 mt-1 mb-0">Estimación informada del costo restante desde el nodo actual $n$ hasta la meta.</p>
+          </div>
+          <div class="slide-card border-l-4 border-emerald-600">
+            <div class="font-bold text-xs text-emerald-900">f(n) = Costo Total Estimado</div>
+            <p class="text-xs text-slate-600 mt-1 mb-0">Costo proyectado del camino óptimo completo pasando a través de $n$.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 8: CONDICIONES DE OPTIMALIDAD DE A*
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2>Propiedades de las Heurísticas</h2>
+        <p class="text-slate-500 text-sm mb-4">Para garantizar que A* encuentre el camino óptimo, la heurística $h(n)$ debe cumplir dos condiciones clave:</p>
+
+        <div class="grid grid-cols-2 gap-4 text-left max-w-4xl">
+          <div class="slide-card border-2 border-indigo-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-sm text-indigo-900">1. Admisibilidad</span>
+              <span class="slide-tag">Condición Clave</span>
+            </div>
+            <div class="bg-indigo-50 font-mono text-xs text-indigo-950 p-2 rounded-lg mb-2">
+              h(n) &le; h*(n), &forall; n
+            </div>
+            <p class="text-xs text-slate-600 mb-0">
+              La heurística <strong>nunca debe sobreestimar</strong> el costo real restante hacia la meta ($h^*(n)$). Es una cota inferior optimista.
+            </p>
+          </div>
+
+          <div class="slide-card border-2 border-cyan-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-sm text-cyan-900">2. Consistencia (Monotonía)</span>
+              <span class="slide-tag" style="background:rgba(2,132,199,0.1);color:#0284c7;">Desigualdad Triangular</span>
+            </div>
+            <div class="bg-cyan-50 font-mono text-xs text-cyan-950 p-2 rounded-lg mb-2">
+              h(n) &le; c(n, a, n') + h(n')
+            </div>
+            <p class="text-xs text-slate-600 mb-0">
+              La estimación $f(n)$ no decrece a lo largo de cualquier camino. Garantiza que la primera vez que se expande un nodo, su camino es óptimo.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 9: HEURÍSTICAS COMUNES EN CUADRÍCULAS
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2>Heurísticas Comunes en Espacios 2D</h2>
+
+        <div class="grid grid-cols-3 gap-3 text-left max-w-4xl mt-3">
+          <div class="slide-card">
+            <div class="font-bold text-sm text-indigo-800 mb-1">Distancia Manhattan ($L_1$)</div>
+            <div class="bg-indigo-50 font-mono text-[11px] text-indigo-900 p-1.5 rounded mb-2">
+              |x1 - x2| + |y1 - y2|
+            </div>
+            <p class="text-xs text-slate-600 mb-0">Exacta y estándar cuando el agente sólo puede moverse en <strong>4 direcciones cardinales</strong> (Arriba, Abajo, Izquierda, Derecha).</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="font-bold text-sm text-cyan-800 mb-1">Distancia Euclidiana ($L_2$)</div>
+            <div class="bg-cyan-50 font-mono text-[11px] text-cyan-900 p-1.5 rounded mb-2">
+              &radic;((x1 - x2)&sup2; + (y1 - y2)&sup2;)
+            </div>
+            <p class="text-xs text-slate-600 mb-0">La línea recta geométrica. Es admisible en cualquier dirección de movimiento continuo.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="font-bold text-sm text-emerald-800 mb-1">Distancia Octile / Chebyshev</div>
+            <div class="bg-emerald-50 font-mono text-[11px] text-emerald-900 p-1.5 rounded mb-2">
+              max(dx,dy) + (&radic;2-1)min(dx,dy)
+            </div>
+            <p class="text-xs text-slate-600 mb-0">Admisible cuando se permite el movimiento diagonal en <strong>8 direcciones</strong> con costo $\sqrt{2}$.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 10: COMPARATIVA DIJKSTRA VS GREEDY VS A*
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2>Comparativa de Estrategias de Búsqueda</h2>
+
+        <table class="w-full max-w-4xl mx-auto text-xs bg-white rounded-xl overflow-hidden border border-slate-200 shadow-md text-left mt-3">
+          <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[11px]">
+            <tr>
+              <th class="p-3">Algoritmo</th>
+              <th class="p-3">Función $f(n)$</th>
+              <th class="p-3">Nodos Explorados</th>
+              <th class="p-3">¿Garantiza Óptimo?</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-600">
+            <tr>
+              <td class="p-3 font-bold text-slate-800">Dijkstra</td>
+              <td class="p-3 font-mono text-indigo-600">$f(n) = g(n)$ ($h=0$)</td>
+              <td class="p-3 text-rose-600 font-semibold">Muy Alto (Expansión radial ciega)</td>
+              <td class="p-3 text-emerald-600 font-bold">Sí (Siempre)</td>
+            </tr>
+            <tr>
+              <td class="p-3 font-bold text-slate-800">Greedy Best-First</td>
+              <td class="p-3 font-mono text-cyan-600">$f(n) = h(n)$ ($g=0$)</td>
+              <td class="p-3 text-emerald-600 font-semibold">Bajo (Corre directo a la meta)</td>
+              <td class="p-3 text-rose-600 font-bold">No (Cae en trampas de muros)</td>
+            </tr>
+            <tr class="bg-indigo-50/50 font-semibold">
+              <td class="p-3 text-indigo-900 font-bold">A* Search</td>
+              <td class="p-3 font-mono text-indigo-700">$f(n) = g(n) + h(n)$</td>
+              <td class="p-3 text-indigo-700">Óptimo (Focalizado y guiado)</td>
+              <td class="p-3 text-emerald-600 font-bold">Sí (Con $h$ admisible)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 11: DEMO EN VIVO A*
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2 class="mb-1">Demo en Vivo: Pathfinding con A*</h2>
+        <p class="text-slate-500 text-xs mb-3">Observa cómo la heurística expande la frontera con menor costo total estimado.</p>
+
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 shadow-xl max-w-4xl w-full">
+          <div class="canvas-container bg-slate-100 rounded-xl overflow-hidden" style="height: 280px;">
+            <canvas id="slideGridCanvas" class="w-full h-full cursor-pointer"></canvas>
+          </div>
+
+          <div class="flex items-center justify-between mt-3 text-xs">
+            <div class="flex items-center gap-2">
+              <button id="slideGridBtnPlay" class="bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-play"></i> Buscar Camino
+              </button>
+              <button id="slideGridBtnPreset" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition">
+                Trampa U
+              </button>
+            </div>
+            <div class="text-slate-300 font-mono">
+              Nodos: <span id="slideGridNodes" class="text-cyan-400 font-bold">0</span> | 
+              Costo: <span id="slideGridCost" class="text-amber-400 font-bold">0.0</span>
+            </div>
+            <a href="demos/a-star.html" target="_blank" class="text-cyan-400 hover:text-cyan-300 font-semibold underline flex items-center gap-1">
+              Abrir Simulador Completo <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 12: CONCLUSIONES Y CASOS EN MODSIM
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <h2>Aplicaciones en Modelación &amp; Simulación</h2>
+
+        <div class="grid grid-cols-2 gap-4 text-left max-w-4xl mt-3">
+          <div class="slide-card">
+            <div class="font-bold text-sm text-indigo-900 mb-1"><i class="fa-solid fa-car mr-1 text-indigo-600"></i> Simulación de Tráfico &amp; Logística</div>
+            <p class="text-xs text-slate-600 mb-0">Enrutamiento dinámico de miles de vehículos con A* considerando costos de congestión en tiempo real.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="font-bold text-sm text-cyan-900 mb-1"><i class="fa-solid fa-sliders mr-1 text-cyan-600"></i> Calibración de Modelos de Simulación</div>
+            <p class="text-xs text-slate-600 mb-0">Búsqueda local (Hill Climbing / Random Restart) para encontrar los mejores coeficientes de fricción o parámetros físicos.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="font-bold text-sm text-emerald-900 mb-1"><i class="fa-solid fa-robot mr-1 text-emerald-600"></i> Agentes Autónomos &amp; Videojuegos</div>
+            <p class="text-xs text-slate-600 mb-0">Navegación espacial en mallas de navegación (NavMeshes) y evasión de obstáculos con A* jerárquico.</p>
+          </div>
+
+          <div class="slide-card">
+            <div class="font-bold text-sm text-amber-900 mb-1"><i class="fa-solid fa-network-wired mr-1 text-amber-600"></i> Optimización Combinatoria</div>
+            <p class="text-xs text-slate-600 mb-0">Problema del Agente Viajero (TSP) y empaquetamiento óptimo mediante variaciones estocásticas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           SLIDE 13: CIERRE & PREGUNTAS
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <div style="max-width: 800px;">
+          <h1 class="text-indigo-700 mb-3">¿Preguntas o Dudas?</h1>
+          <p class="text-slate-600 text-base mb-6">
+            Explora libremente los simuladores y experimenta cambiando los parámetros de búsqueda.
+          </p>
+
+          <div class="flex justify-center gap-4">
+            <a href="demos/hill-climbing.html" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
+              <i class="fa-solid fa-mountain"></i> Simulador Hill Climbing
+            </a>
+            <a href="demos/a-star.html" target="_blank" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
+              <i class="fa-solid fa-route"></i> Simulador A* Pathfinding
+            </a>
+            <a href="index.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+              <i class="fa-solid fa-house"></i> Volver al Portal
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+
+  <!-- Interactive Slide Mini-Widgets Module -->
+  <script type="module">
+    import { HillVisualizer } from './js/visualizers/hill-visualizer.js';
+    import { GridVisualizer } from './js/visualizers/grid-visualizer.js';
+
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      controls: true,
+      progress: true,
+      center: true,
+      transition: 'slide',
+      plugins: [ RevealHighlight, RevealNotes ]
+    });
+
+    // 1. Embedded Slide Hill Climbing Mini-Visualizer
+    const slideHillCanvas = document.getElementById('slideHillCanvas');
+    const slideHillBtnPlay = document.getElementById('slideHillBtnPlay');
+    const slideHillBtnReset = document.getElementById('slideHillBtnReset');
+    const slideHillFitness = document.getElementById('slideHillFitness');
+    const slideHillStatus = document.getElementById('slideHillStatus');
+
+    let slideHillVis = null;
+    if (slideHillCanvas) {
+      slideHillVis = new HillVisualizer(slideHillCanvas, {
+        speed: 100,
+        stepSize: 0.4,
+        onTelemetryUpdate: (data) => {
+          slideHillFitness.textContent = data.fitness.toFixed(2);
+          if (data.status === 'local_max') {
+            slideHillStatus.textContent = 'Atrapado en Máximo Local';
+            slideHillStatus.className = 'text-rose-400 font-bold';
+            slideHillBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar';
+          } else if (data.status === 'global_optimal') {
+            slideHillStatus.textContent = '¡Óptimo Global!';
+            slideHillStatus.className = 'text-emerald-400 font-bold';
+            slideHillBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar';
+          } else if (data.status === 'climbing') {
+            slideHillStatus.textContent = 'Ascendiendo...';
+            slideHillStatus.className = 'text-cyan-400';
+          } else {
+            slideHillStatus.textContent = 'Listo';
+            slideHillStatus.className = 'text-slate-300';
+          }
+        }
+      });
+
+      slideHillBtnPlay.addEventListener('click', () => {
+        if (slideHillVis.isRunning) {
+          slideHillVis.pause();
+          slideHillBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar';
+        } else {
+          slideHillVis.play();
+          slideHillBtnPlay.innerHTML = '<i class="fa-solid fa-pause"></i> Pausar';
+        }
+      });
+
+      slideHillBtnReset.addEventListener('click', () => {
+        slideHillVis.reset();
+        slideHillBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar';
+      });
+    }
+
+    // 2. Embedded Slide A* Mini-Visualizer
+    const slideGridCanvas = document.getElementById('slideGridCanvas');
+    const slideGridBtnPlay = document.getElementById('slideGridBtnPlay');
+    const slideGridBtnPreset = document.getElementById('slideGridBtnPreset');
+    const slideGridNodes = document.getElementById('slideGridNodes');
+    const slideGridCost = document.getElementById('slideGridCost');
+
+    let slideGridVis = null;
+    if (slideGridCanvas) {
+      slideGridVis = new GridVisualizer(slideGridCanvas, {
+        rows: 12,
+        cols: 22,
+        speed: 40,
+        showCellValues: false,
+        onTelemetryUpdate: (data) => {
+          slideGridNodes.textContent = data.nodesExpanded;
+          slideGridCost.textContent = data.totalCost ? data.totalCost.toFixed(1) : '0.0';
+          if (data.status === 'found') {
+            slideGridBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Buscar Camino';
+          }
+        }
+      });
+
+      slideGridBtnPlay.addEventListener('click', () => {
+        if (slideGridVis.isRunning) {
+          slideGridVis.pause();
+          slideGridBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Buscar Camino';
+        } else {
+          slideGridVis.play();
+          slideGridBtnPlay.innerHTML = '<i class="fa-solid fa-pause"></i> Pausar';
+        }
+      });
+
+      slideGridBtnPreset.addEventListener('click', () => {
+        slideGridVis.loadPreset('trap');
+        slideGridBtnPlay.innerHTML = '<i class="fa-solid fa-play"></i> Buscar Camino';
+      });
+    }
+
+    // Re-render canvases on slide change so HighDPI coordinates stay sharp
+    Reveal.on('slidechanged', () => {
+      if (slideHillVis) {
+        slideHillVis.initCanvas();
+        slideHillVis.render();
+      }
+      if (slideGridVis) {
+        slideGridVis.initCanvas();
+        slideGridVis.render();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "modsim",
+  "version": "1.0.0",
+  "description": "Modelación y Simulación — Búsqueda en Espacios de Estados & Optimización (UVG)",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "modsim",
+    "simulation",
+    "hill-climbing",
+    "a-star",
+    "pathfinding",
+    "uvg"
+  ],
+  "author": "menene",
+  "license": "MIT"
+}

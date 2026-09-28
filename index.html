@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelación y Simulación — Búsqueda y Optimización</title>
+  
+  <!-- FontAwesome, Google Fonts & Tailwind CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- ── HERO SECTION ── -->
+  <section class="hero-gradient hero-pattern text-white py-16 px-4 sm:px-6 relative overflow-hidden">
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+
+      <!-- Course Pill Badges -->
+      <div class="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/30 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-mono font-medium text-indigo-200 mb-6 animate-float">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span>CC3088 — Modelación y Simulación</span>
+        <span class="text-indigo-400">|</span>
+        <span>Universidad del Valle de Guatemala</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+        Espacios de Estados &amp; Algoritmos de Búsqueda
+      </h1>
+
+      <p class="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto mb-8 font-normal leading-relaxed">
+        Plataforma docente interactiva para el estudio y visualización de <strong class="text-white font-semibold">Hill Climbing</strong> (Optimización Local) y el <strong class="text-cyan-300 font-semibold">Algoritmo A*</strong> (Búsqueda Heurística).
+      </p>
+
+      <!-- Topic Tags -->
+      <div class="flex flex-wrap justify-center gap-2 mb-10 text-xs font-mono">
+        <span class="bg-white/10 text-slate-200 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+          <i class="fa-solid fa-mountain text-indigo-400"></i> Hill Climbing
+        </span>
+        <span class="bg-white/10 text-slate-200 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+          <i class="fa-solid fa-route text-cyan-400"></i> Algoritmo A*
+        </span>
+        <span class="bg-white/10 text-slate-200 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+          <i class="fa-solid fa-square-root-variable text-emerald-400"></i> f(n) = g(n) + h(n)
+        </span>
+        <span class="bg-white/10 text-slate-200 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+          <i class="fa-solid fa-dice text-amber-400"></i> Random-Restart
+        </span>
+        <span class="bg-white/10 text-slate-200 border border-white/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+          <i class="fa-solid fa-compass text-rose-400"></i> Admisibilidad &amp; Consistencia
+        </span>
+      </div>
+
+      <!-- Action Buttons CTA -->
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="presentation.html"
+           target="_blank"
+           class="bg-white text-indigo-900 hover:bg-slate-100 font-bold px-6 py-3.5 rounded-xl text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+          <i class="fa-solid fa-person-chalkboard text-indigo-600"></i>
+          <span>Ver Presentación de Clase</span>
+        </a>
+
+        <a href="demos/a-star.html"
+           class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-5 py-3.5 rounded-xl text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+          <i class="fa-solid fa-route"></i>
+          <span>Simulador A* Pathfinding</span>
+        </a>
+
+        <a href="demos/hill-climbing.html"
+           class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-3.5 rounded-xl text-sm shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+          <i class="fa-solid fa-mountain"></i>
+          <span>Simulador Hill Climbing</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── MAIN CONTENT CONTAINER ── -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-14 flex-1">
+
+    <!-- ── SECTION 1: INTERACTIVE PLAYGROUNDS SHOWCASE ── -->
+    <section class="mb-16">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Simuladores y Laboratorios Visuales</h2>
+        <p class="text-slate-600 text-sm">Laboratorios interactivos diseñados para experimentar con parámetros, observar paso a paso el comportamiento algorítmico y analizar casos de fallo.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Showcase Card: A* -->
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-full -mr-10 -mt-10 pointer-events-none"></div>
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="inline-flex items-center gap-1.5 bg-cyan-100 text-cyan-800 text-xs font-mono font-bold px-3 py-1 rounded-full">
+                <i class="fa-solid fa-route"></i> Búsqueda Heurística
+              </span>
+              <span class="text-xs font-mono text-slate-400">Cuadrícula 2D</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Simulador de Algoritmo A*</h3>
+            <p class="text-slate-600 text-xs leading-relaxed mb-4">
+              Visualiza en tiempo real la expansión de la frontera <strong class="text-cyan-700 font-mono">f(n) = g(n) + h(n)</strong>. Dibuja muros y terrenos con costos ponderados (barro 3x, agua 5x), compara contra Dijkstra y Greedy Best-First, y prueba laberintos complejos.
+            </p>
+
+            <ul class="text-xs text-slate-600 space-y-1.5 mb-6 pl-4 list-disc">
+              <li>Cálculo numérico de $g, h, f$ visible en cada celda.</li>
+              <li>Heurísticas: Manhattan, Euclidiana, Chebyshev y Dijkstra ($h=0$).</li>
+              <li>Generador de laberintos, trampas cóncavas y terrenos mixtos.</li>
+              <li>Inspección en vivo de la Cola de Prioridad (MinHeap).</li>
+            </ul>
+          </div>
+
+          <a href="demos/a-star.html" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 px-4 rounded-xl text-xs text-center transition flex items-center justify-center gap-2">
+            <span>Abrir Simulador A*</span>
+            <i class="fa-solid fa-arrow-right text-[11px]"></i>
+          </a>
+        </div>
+
+        <!-- Showcase Card: Hill Climbing -->
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full -mr-10 -mt-10 pointer-events-none"></div>
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="inline-flex items-center gap-1.5 bg-indigo-100 text-indigo-800 text-xs font-mono font-bold px-3 py-1 rounded-full">
+                <i class="fa-solid fa-mountain"></i> Búsqueda Local
+              </span>
+              <span class="text-xs font-mono text-slate-400">Paisaje Continuo</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Simulador de Hill Climbing</h3>
+            <p class="text-slate-600 text-xs leading-relaxed mb-4">
+              Experimenta con la ascensión de gradiente en paisajes de optimización multi-pico, mesetas planas y crestas. Descubre de forma visual cómo el agente queda atrapado en óptimos locales y cómo solucionarlo con reinicios aleatorios.
+            </p>
+
+            <ul class="text-xs text-slate-600 space-y-1.5 mb-6 pl-4 list-disc">
+              <li>Haz click en cualquier punto del paisaje para mover al agente.</li>
+              <li>Variantes: Steepest Ascent, First-Choice, Stochastic y Random-Restart.</li>
+              <li>Visualización de evaluación de vecindarios y sondas de paso $\delta$.</li>
+              <li>Telemetría en tiempo real: $x$, $f(x)$, iteraciones y mejor fitness histórico.</li>
+            </ul>
+          </div>
+
+          <a href="demos/hill-climbing.html" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 px-4 rounded-xl text-xs text-center transition flex items-center justify-center gap-2">
+            <span>Abrir Simulador Hill Climbing</span>
+            <i class="fa-solid fa-arrow-right text-[11px]"></i>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SECTION 2: THEORETICAL TOPICS ── -->
+    <section class="mb-16">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Temas y Conceptos Fundamentales</h2>
+        <p class="text-slate-600 text-sm">Resumen conceptual de los pilares evaluados en el curso de Modelación y Simulación.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg mb-4">
+            <i class="fa-solid fa-sitemap"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-sm mb-1.5">Espacio de Estados</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Formalización de un sistema mediante estados $S$, acciones disponibles $Actions(s)$ y modelo de transición $Result(s,a)$.
+          </p>
+          <span class="text-[11px] font-mono text-indigo-600 font-semibold">ModSim • Formalización</span>
+        </div>
+
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg mb-4">
+            <i class="fa-solid fa-mountain"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-sm mb-1.5">Búsqueda Local</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Algoritmos que operan evaluando exclusivamente el estado actual y sus vecinos inmediatos con memoria $O(1)$, sin guardar caminos previos.
+          </p>
+          <span class="text-[11px] font-mono text-indigo-600 font-semibold">Hill Climbing • Memoria O(1)</span>
+        </div>
+
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg mb-4">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-sm mb-1.5">Trampas de Optimización</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Máximos locales (cimas falsas), mesetas con gradiente nulo y crestas escarpadas que bloquean el avance voraz.
+          </p>
+          <span class="text-[11px] font-mono text-rose-600 font-semibold">Óptimos Locales • Mesetas</span>
+        </div>
+
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center text-lg mb-4">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-sm mb-1.5">Ecuación Maestra de A*</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Combinación del costo acumulado real $g(n)$ y la estimación heurística $h(n)$ para priorizar la exploración de nodos con menor $f(n)$.
+          </p>
+          <span class="text-[11px] font-mono text-cyan-600 font-semibold">f(n) = g(n) + h(n)</span>
+        </div>
+
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg mb-4">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-sm mb-1.5">Admisibilidad &amp; Consistencia</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Condiciones matemáticas requeridas para garantizar optimalidad: $h(n) \le h^*(n)$ y la desigualdad triangular en la monotonía.
+          </p>
+          <span class="text-[11px] font-mono text-emerald-600 font-semibold">Garantía de Optimalidad</span>
+        </div>
+
+        <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg mb-4">
+            <i class="fa-solid fa-dice"></i>
+          </div>
+          <h4 class="font-bold text-slate-900 text-sm mb-1.5">Random-Restart &amp; SA</h4>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Estrategias estocásticas para escapar de óptimos locales mediante múltiples reinicios independientes y transiciones probabilísticas.
+          </p>
+          <span class="text-[11px] font-mono text-amber-600 font-semibold">Probabilidad 1 - (1-p)^k</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SECTION 3: COMPARISON MATRIX TABLE ── -->
+    <section class="mb-16">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Cuadro Comparativo de Algoritmos</h2>
+        <p class="text-slate-600 text-sm">Resumen de complejidad temporal, memoria, completitud y optimalidad.</p>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[11px] border-b border-slate-200">
+            <tr>
+              <th class="p-4">Algoritmo</th>
+              <th class="p-4">Estrategia</th>
+              <th class="p-4">Complejidad Tiempo</th>
+              <th class="p-4">Complejidad Espacio</th>
+              <th class="p-4">¿Es Completo?</th>
+              <th class="p-4">¿Es Óptimo?</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-600">
+            <tr class="hover:bg-slate-50">
+              <td class="p-4 font-bold text-slate-900">Hill Climbing</td>
+              <td class="p-4">Voraz Local (Greedy)</td>
+              <td class="p-4 font-mono">$O(\text{vecinos} \times \text{pasos})$</td>
+              <td class="p-4 font-mono text-emerald-600 font-bold">$O(1)$ (Excelente)</td>
+              <td class="p-4 text-rose-600 font-semibold">No (Atrapable)</td>
+              <td class="p-4 text-rose-600 font-semibold">No (Óptimo local)</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-4 font-bold text-slate-900">Random-Restart HC</td>
+              <td class="p-4">Local con $k$ reinicios</td>
+              <td class="p-4 font-mono">$O(k \times \text{pasos})$</td>
+              <td class="p-4 font-mono text-emerald-600 font-bold">$O(1)$</td>
+              <td class="p-4 text-emerald-600 font-semibold">Sí (asintótico con $k \to \infty$)</td>
+              <td class="p-4 text-emerald-600 font-semibold">Sí (asintótico)</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-4 font-bold text-slate-900">Dijkstra</td>
+              <td class="p-4">Costo uniforme ($h=0$)</td>
+              <td class="p-4 font-mono">$O((V + E) \log V)$</td>
+              <td class="p-4 font-mono text-rose-600">$O(b^{C^*/\epsilon})$</td>
+              <td class="p-4 text-emerald-600 font-semibold">Sí</td>
+              <td class="p-4 text-emerald-600 font-semibold">Sí</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-4 font-bold text-slate-900">Greedy Best-First</td>
+              <td class="p-4">Heurística pura ($g=0$)</td>
+              <td class="p-4 font-mono">$O(b^m)$ (peor caso)</td>
+              <td class="p-4 font-mono text-rose-600">$O(b^m)$</td>
+              <td class="p-4 text-rose-600 font-semibold">No (puede ciclar)</td>
+              <td class="p-4 text-rose-600 font-semibold">No</td>
+            </tr>
+            <tr class="hover:bg-indigo-50/40 bg-indigo-50/20 font-semibold">
+              <td class="p-4 font-bold text-indigo-950">A* Search</td>
+              <td class="p-4 text-indigo-900">Heurística + Costo ($g+h$)</td>
+              <td class="p-4 font-mono text-indigo-900">$O(b^{\epsilon \cdot d})$</td>
+              <td class="p-4 font-mono text-indigo-900">$O(b^d)$</td>
+              <td class="p-4 text-emerald-600 font-bold">Sí</td>
+              <td class="p-4 text-emerald-600 font-bold">Sí (Con $h$ admisible)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="border-t border-slate-200 bg-white py-8 px-4 text-center text-xs text-slate-500">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-graduation-cap text-indigo-600 text-sm"></i>
+        <span><strong>Modelación y Simulación</strong> — Universidad del Valle de Guatemala</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="presentation.html" target="_blank" class="hover:text-indigo-600 transition">Presentación</a>
+        <a href="demos/a-star.html" class="hover:text-cyan-600 transition">Simulador A*</a>
+        <a href="demos/hill-climbing.html" class="hover:text-indigo-600 transition">Simulador Hill Climbing</a>
+        <a href="https://github.com/menene/modsim" target="_blank" class="hover:text-slate-900 transition flex items-center gap-1">
+          <i class="fa-brands fa-github text-sm"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

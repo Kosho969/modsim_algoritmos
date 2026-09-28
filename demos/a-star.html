@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Algoritmo A* — Modelación y Simulación</title>
+  
+  <!-- FontAwesome & Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- ── NAVBAR ── -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="../index.html" class="flex items-center space-x-2 text-indigo-400 hover:text-indigo-300 transition">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+          <span class="font-bold text-sm">Portal ModSim</span>
+        </a>
+        <span class="text-slate-700">|</span>
+        <div class="flex items-center space-x-2">
+          <span class="bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs px-2.5 py-0.5 rounded-full font-mono">Búsqueda Heurística</span>
+          <h1 class="font-bold text-slate-100 text-base sm:text-lg">Simulador de Algoritmo A*</h1>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <a href="hill-climbing.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-mountain text-indigo-400"></i>
+          <span>Ir a Hill Climbing</span>
+        </a>
+        <a href="../presentation.html#/a-star" target="_blank" class="text-xs bg-cyan-600 hover:bg-cyan-500 text-white font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+          <i class="fa-solid fa-person-chalkboard"></i>
+          <span>Ver Diapositivas</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- ── LEFT/CENTER: GRID CANVAS & PLAYBACK CONTROLS (8 cols) ── -->
+    <div class="lg:col-span-8 flex flex-col space-y-4">
+      
+      <!-- Canvas Card -->
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 shadow-2xl relative flex flex-col">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center space-x-2">
+            <span class="inline-block w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span class="text-xs font-mono text-slate-400">Arrastra <strong class="text-emerald-400">S (Inicio)</strong> o <strong class="text-rose-400">G (Meta)</strong>. Dibuja muros o terrenos en la cuadrícula.</span>
+          </div>
+          <div id="statusBadge" class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+            Listo
+          </div>
+        </div>
+
+        <!-- Canvas Frame -->
+        <div class="canvas-container w-full bg-slate-100 rounded-xl overflow-hidden border border-slate-700" style="height: 440px;">
+          <canvas id="gridCanvas" class="w-full h-full cursor-crosshair"></canvas>
+        </div>
+
+        <!-- Brush Toolbar & Presets -->
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 pb-3 border-b border-slate-800/80">
+          
+          <!-- Drawing Brushes -->
+          <div class="flex items-center space-x-1.5 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800">
+            <span class="text-[11px] font-mono text-slate-400 px-2">Pincel:</span>
+            <button data-brush="wall" class="brush-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-200 border border-cyan-500/50 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded bg-slate-900 border border-slate-700"></span> Muro
+            </button>
+            <button data-brush="mud" class="brush-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded bg-amber-400"></span> Barro (3x)
+            </button>
+            <button data-brush="water" class="brush-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded bg-sky-400"></span> Agua (5x)
+            </button>
+            <button data-brush="erase" class="brush-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
+              <i class="fa-solid fa-eraser text-xs"></i> Borrar
+            </button>
+          </div>
+
+          <!-- Presets -->
+          <div class="flex items-center space-x-1.5 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 overflow-x-auto">
+            <span class="text-[11px] font-mono text-slate-400 px-1.5">Mapas:</span>
+            <button data-preset="maze" class="preset-btn px-2 py-1 rounded-lg text-xs bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Laberinto</button>
+            <button data-preset="trap" class="preset-btn px-2 py-1 rounded-lg text-xs bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Trampa U</button>
+            <button data-preset="swamp" class="preset-btn px-2 py-1 rounded-lg text-xs bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Pantano</button>
+            <button data-preset="random" class="preset-btn px-2 py-1 rounded-lg text-xs bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Aleatorio</button>
+            <button data-preset="clear" class="preset-btn px-2 py-1 rounded-lg text-xs bg-slate-800 text-rose-300 hover:bg-rose-950/60 transition">Limpiar</button>
+          </div>
+        </div>
+
+        <!-- Action Control Bar -->
+        <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center space-x-2">
+            <button id="btnPlay" class="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold px-4 py-2 rounded-xl text-sm transition flex items-center gap-2 shadow-lg shadow-cyan-600/30">
+              <i class="fa-solid fa-play"></i>
+              <span>Buscar Camino</span>
+            </button>
+            <button id="btnStep" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-3.5 py-2 rounded-xl text-sm border border-slate-700 transition flex items-center gap-2">
+              <i class="fa-solid fa-forward-step"></i>
+              <span>Paso a Paso</span>
+            </button>
+            <button id="btnResetSearch" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl text-sm border border-slate-700 transition flex items-center gap-2">
+              <i class="fa-solid fa-rotate-left"></i>
+              <span>Reiniciar Búsqueda</span>
+            </button>
+          </div>
+
+          <!-- Options Toggles -->
+          <div class="flex items-center space-x-4 text-xs text-slate-300">
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input id="toggleDiagonals" type="checkbox" class="accent-cyan-500 rounded">
+              <span>Diagonales (8 dirs)</span>
+            </label>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input id="toggleMath" type="checkbox" checked class="accent-cyan-500 rounded">
+              <span>Ver $f=g+h$</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Educational Explanation Card -->
+      <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 text-sm text-slate-300">
+        <h3 class="font-bold text-slate-100 flex items-center gap-2 mb-1.5 text-sm">
+          <i class="fa-solid fa-chart-diagram text-cyan-400"></i>
+          <span>Explicación del Proceso de Exploración</span>
+        </h3>
+        <p id="explanationText" class="text-slate-400 leading-relaxed text-xs">
+          A* utiliza la ecuación <strong class="text-cyan-300 font-mono">f(n) = g(n) + h(n)</strong> para balancear el costo real acumulado $g(n)$ con la estimación heurística admisible hacia la meta $h(n)$.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT: CONFIGURATION & TELEMETRY PANEL (4 cols) ── -->
+    <div class="lg:col-span-4 flex flex-col space-y-4">
+
+      <!-- Telemetry Dashboard -->
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 shadow-xl">
+        <h2 class="font-bold text-sm text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-gauge-high text-cyan-400"></i>
+          <span>Métricas de Rendimiento</span>
+        </h2>
+
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+            <div class="text-xs text-slate-500 font-mono">Nodos Expandidos</div>
+            <div id="statNodesExpanded" class="text-lg font-bold font-mono text-cyan-400 mt-0.5">0</div>
+          </div>
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+            <div class="text-xs text-slate-500 font-mono">Costo del Camino</div>
+            <div id="statTotalCost" class="text-lg font-bold font-mono text-amber-400 mt-0.5">0.0</div>
+          </div>
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+            <div class="text-xs text-slate-500 font-mono">Frontera (Open Set)</div>
+            <div id="statOpenSize" class="text-lg font-bold font-mono text-slate-200 mt-0.5">1</div>
+          </div>
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+            <div class="text-xs text-slate-500 font-mono">Visitados (Closed Set)</div>
+            <div id="statClosedSize" class="text-lg font-bold font-mono text-violet-400 mt-0.5">0</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/60 border border-slate-800/80 rounded-xl p-3 flex items-center justify-between text-xs">
+          <span class="text-slate-400">Longitud del Camino:</span>
+          <span id="statPathLen" class="font-mono font-bold text-slate-200">0 pasos</span>
+        </div>
+      </div>
+
+      <!-- Algorithm Mode & Heuristic Selector -->
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 shadow-xl">
+        <h2 class="font-bold text-sm text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-compass text-cyan-400"></i>
+          <span>Modo de Búsqueda y Heurística</span>
+        </h2>
+
+        <!-- Mode Radio -->
+        <div class="space-y-2 mb-4">
+          <label class="flex items-center space-x-2.5 p-2 rounded-lg bg-slate-900/70 border border-slate-800 cursor-pointer hover:bg-slate-800/80">
+            <input type="radio" name="searchMode" value="astar" checked class="accent-cyan-500">
+            <div class="text-xs">
+              <span class="font-semibold text-slate-100">A* Search ($f = g + h$)</span>
+              <p class="text-[11px] text-slate-400">Óptimo y completo con heurística admisible.</p>
+            </div>
+          </label>
+
+          <label class="flex items-center space-x-2.5 p-2 rounded-lg bg-slate-900/70 border border-slate-800 cursor-pointer hover:bg-slate-800/80">
+            <input type="radio" name="searchMode" value="dijkstra" class="accent-cyan-500">
+            <div class="text-xs">
+              <span class="font-semibold text-slate-100">Dijkstra ($h = 0$)</span>
+              <p class="text-[11px] text-slate-400">Búsqueda de costo uniforme sin guía heurística.</p>
+            </div>
+          </label>
+
+          <label class="flex items-center space-x-2.5 p-2 rounded-lg bg-slate-900/70 border border-slate-800 cursor-pointer hover:bg-slate-800/80">
+            <input type="radio" name="searchMode" value="greedy" class="accent-cyan-500">
+            <div class="text-xs">
+              <span class="font-semibold text-slate-100">Greedy Best-First ($g = 0$)</span>
+              <p class="text-[11px] text-slate-400">Rápido pero puede encontrar caminos subóptimos.</p>
+            </div>
+          </label>
+        </div>
+
+        <!-- Heuristic Select (when in A* mode) -->
+        <div id="heuristicSection" class="pt-3 border-t border-slate-800">
+          <div class="text-xs font-semibold text-slate-300 mb-2">Función Heurística $h(n)$:</div>
+          <select id="selectHeuristic" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:border-cyan-500 outline-none">
+            <option value="manhattan">Distancia Manhattan (L1 — Cuadrícula 4-dirs)</option>
+            <option value="euclidean">Distancia Euclidiana (L2 — Línea recta)</option>
+            <option value="chebyshev">Distancia Octile / Chebyshev (8-dirs)</option>
+          </select>
+
+          <!-- Weighted A* slider -->
+          <div class="mt-3 flex items-center justify-between text-xs text-slate-400">
+            <span>Peso Heurístico ($w$):</span>
+            <span id="weightVal" class="font-mono font-bold text-cyan-400">1.0x</span>
+          </div>
+          <input id="weightSlider" type="range" min="0.5" max="3.0" step="0.1" value="1.0" class="w-full accent-cyan-500 cursor-pointer mt-1">
+        </div>
+      </div>
+
+      <!-- Priority Queue Live Preview -->
+      <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 shadow-xl">
+        <h2 class="font-bold text-sm text-slate-200 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-list-ol text-cyan-400"></i>
+          <span>Frontera (Top MinHeap)</span>
+        </h2>
+        <div id="pqPreview" class="space-y-1 text-[11px] font-mono text-slate-400">
+          <div class="p-1.5 rounded bg-slate-900 border border-slate-800 flex justify-between">
+            <span>(x:3, y:9)</span>
+            <span class="text-cyan-400 font-bold">f: 22 (g:0, h:22)</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Module Script -->
+  <script type="module">
+    import { GridVisualizer } from '../js/visualizers/grid-visualizer.js';
+
+    const canvas = document.getElementById('gridCanvas');
+    const statusBadge = document.getElementById('statusBadge');
+    const explanationText = document.getElementById('explanationText');
+    const statNodesExpanded = document.getElementById('statNodesExpanded');
+    const statTotalCost = document.getElementById('statTotalCost');
+    const statOpenSize = document.getElementById('statOpenSize');
+    const statClosedSize = document.getElementById('statClosedSize');
+    const statPathLen = document.getElementById('statPathLen');
+    const pqPreview = document.getElementById('pqPreview');
+
+    const btnPlay = document.getElementById('btnPlay');
+    const btnStep = document.getElementById('btnStep');
+    const btnResetSearch = document.getElementById('btnResetSearch');
+    const toggleDiagonals = document.getElementById('toggleDiagonals');
+    const toggleMath = document.getElementById('toggleMath');
+    const selectHeuristic = document.getElementById('selectHeuristic');
+    const weightSlider = document.getElementById('weightSlider');
+    const weightVal = document.getElementById('weightVal');
+
+    const visualizer = new GridVisualizer(canvas, {
+      rows: 16,
+      cols: 28,
+      speed: 35,
+      onTelemetryUpdate: (data) => {
+        statNodesExpanded.textContent = data.nodesExpanded;
+        statTotalCost.textContent = data.totalCost ? data.totalCost.toFixed(1) : '0.0';
+        statOpenSize.textContent = data.openSet ? data.openSet.length : 0;
+        statClosedSize.textContent = data.closedSetCount || 0;
+        statPathLen.textContent = data.finalPath && data.finalPath.length ? `${data.finalPath.length} pasos` : '0 pasos';
+
+        // Update Status Badge
+        if (data.status === 'ready') {
+          statusBadge.textContent = 'Listo';
+          statusBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30';
+          explanationText.innerHTML = 'Selecciona una herramienta o pulsa <strong>Buscar Camino</strong> para ver la expansión.';
+        } else if (data.status === 'searching') {
+          statusBadge.textContent = 'Explorando...';
+          statusBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 animate-pulse';
+          if (data.currentNode) {
+            explanationText.innerHTML = `Extrayendo nodo con menor $f$: <strong>(${data.currentNode.x}, ${data.currentNode.y})</strong> con $g=${data.currentNode.g.toFixed(1)}$, $h=${data.currentNode.h.toFixed(1)}$, $f=${data.currentNode.f.toFixed(1)}$.`;
+          }
+        } else if (data.status === 'found') {
+          statusBadge.textContent = '¡Camino Óptimo Encontrado!';
+          statusBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+          explanationText.innerHTML = `🎯 <strong>Meta alcanzada</strong>. El camino óptimo tiene un costo de <strong>${data.totalCost.toFixed(1)}</strong> con <strong>${data.nodesExpanded}</strong> nodos explorados en total.`;
+          btnPlay.innerHTML = '<i class="fa-solid fa-play"></i><span>Buscar Camino</span>';
+        } else if (data.status === 'unreachable') {
+          statusBadge.textContent = 'Camino Imposible (Bloqueado)';
+          statusBadge.className = 'px-3 py-1 rounded-full text-xs font-mono font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30';
+          explanationText.innerHTML = `❌ <strong>Open Set vacío</strong>. No existe ningún camino continuo entre el Inicio y la Meta debido a los muros u obstáculos.`;
+          btnPlay.innerHTML = '<i class="fa-solid fa-play"></i><span>Buscar Camino</span>';
+        }
+
+        // Render Priority Queue Preview (Top 5)
+        if (data.openSet && data.openSet.length > 0) {
+          const sorted = [...data.openSet].sort((a, b) => a.f - b.f).slice(0, 4);
+          pqPreview.innerHTML = sorted.map((n, idx) => `
+            <div class="p-1.5 rounded bg-slate-900 border border-slate-800 flex justify-between items-center ${idx === 0 ? 'border-cyan-500/40 bg-cyan-950/20' : ''}">
+              <span class="text-slate-300">(${n.x}, ${n.y})</span>
+              <span class="text-cyan-400 font-bold font-mono">f: ${n.f.toFixed(1)} <span class="text-[10px] text-slate-500">(g:${n.g.toFixed(0)}, h:${n.h.toFixed(0)})</span></span>
+            </div>
+          `).join('');
+        }
+      }
+    });
+
+    // Play / Pause Button
+    btnPlay.addEventListener('click', () => {
+      if (visualizer.isRunning) {
+        visualizer.pause();
+        btnPlay.innerHTML = '<i class="fa-solid fa-play"></i><span>Reanudar</span>';
+      } else {
+        visualizer.play();
+        btnPlay.innerHTML = '<i class="fa-solid fa-pause"></i><span>Pausar</span>';
+      }
+    });
+
+    // Step Button
+    btnStep.addEventListener('click', () => {
+      visualizer.pause();
+      visualizer.step();
+      btnPlay.innerHTML = '<i class="fa-solid fa-play"></i><span>Reanudar</span>';
+    });
+
+    // Reset Search Button
+    btnResetSearch.addEventListener('click', () => {
+      visualizer.resetSearch();
+      btnPlay.innerHTML = '<i class="fa-solid fa-play"></i><span>Buscar Camino</span>';
+    });
+
+    // Brushes
+    const brushBtns = document.querySelectorAll('.brush-btn');
+    brushBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        brushBtns.forEach(b => {
+          b.className = 'brush-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-transparent text-slate-400 hover:text-slate-200 flex items-center gap-1.5';
+        });
+        btn.className = 'brush-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-200 border border-cyan-500/50 flex items-center gap-1.5';
+        visualizer.setDrawMode(btn.dataset.brush);
+      });
+    });
+
+    // Presets
+    const presetBtns = document.querySelectorAll('.preset-btn');
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        visualizer.loadPreset(btn.dataset.preset);
+        btnPlay.innerHTML = '<i class="fa-solid fa-play"></i><span>Buscar Camino</span>';
+      });
+    });
+
+    // Toggle Diagonals
+    toggleDiagonals.addEventListener('change', (e) => {
+      visualizer.setAllowDiagonals(e.target.checked);
+    });
+
+    // Toggle Math Labels
+    toggleMath.addEventListener('change', (e) => {
+      visualizer.toggleCellValues(e.target.checked);
+    });
+
+    // Search Modes
+    const searchModeRadios = document.querySelectorAll('input[name="searchMode"]');
+    const heuristicSection = document.getElementById('heuristicSection');
+    searchModeRadios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        const mode = e.target.value;
+        visualizer.setMode(mode);
+        heuristicSection.style.display = mode === 'astar' ? 'block' : 'none';
+        btnPlay.innerHTML = '<i class="fa-solid fa-play"></i><span>Buscar Camino</span>';
+      });
+    });
+
+    // Heuristics
+    selectHeuristic.addEventListener('change', (e) => {
+      visualizer.setHeuristic(e.target.value);
+    });
+
+    // Weight slider
+    weightSlider.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      weightVal.textContent = `${val.toFixed(1)}x`;
+      visualizer.setWeight(val);
+    });
+  </script>
+</body>
+</html>
