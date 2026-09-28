@@ -47,26 +47,45 @@ npx serve .
 
 ## 🧪 Pruebas Automatizadas
 
-Ejecuta el conjunto de pruebas unitarias en Node.js:
+Ejecuta el conjunto de pruebas unitarias en Node.js (27 tests):
 ```bash
 npm test
-# o: node test.js
+# o directamente: node test.js
 ```
 
 ---
 
 ## 🌐 Despliegue en GitHub Pages
 
-1. Inicializa el repositorio git y haz push a tu cuenta de GitHub:
-   ```bash
-   git add .
-   git commit -m "feat: complete modsim interactive suite with HC, A* and MCMF"
-   git remote add origin https://github.com/menene/modsim.git
-   git branch -M main
-   git push -u origin main
-   ```
-2. En GitHub: ve a **Settings** > **Pages** > selecciona **Deploy from a branch (`main` / root)**.
-3. El portal quedará disponible automáticamente en `https://menene.github.io/modsim/`.
+El repositorio cuenta con un flujo automatizado de CI/CD mediante **GitHub Actions** (`.github/workflows/deploy.yml`) que ejecuta los tests y publica el sitio automáticamente tras cada `git push`.
+
+### 📌 Pasos para Activar GitHub Pages
+
+1. **Entra a la configuración de Pages en tu repositorio de GitHub**:
+   👉 [https://github.com/menene/modsim/settings/pages](https://github.com/menene/modsim/settings/pages)
+
+2. **En la sección *Build and deployment***:
+   - En el menú desplegable **Source**, selecciona: **`GitHub Actions`**.
+   *(Esto conecta el workflow automático `.github/workflows/deploy.yml`)*.
+
+3. **Ejecutar el despliegue**:
+   - Al hacer cualquier `git push origin main`, el workflow se ejecutará automáticamente.
+   - O puedes ir a la pestaña **Actions** en GitHub, seleccionar **Deploy to GitHub Pages** y presionar **Run workflow**.
+
+> 💡 **Nota sobre el error `HttpError: Not Found (Get Pages site failed)`**:
+> Si ves este mensaje en GitHub Actions, significa que el servicio de Pages aún no estaba activado en los Settings del repositorio. Siguiendo el **Paso 2** arriba (seleccionando `Source: GitHub Actions`) y re-ejecutando el workflow, el error se resolverá de inmediato.
+
+---
+
+## 🔗 Enlaces Públicos en Producción
+
+Una vez activo, el sitio estará disponible en:
+
+- 🏠 **Portal Principal**: [https://menene.github.io/modsim/](https://menene.github.io/modsim/)
+- 📊 **Presentación Reveal.js**: [https://menene.github.io/modsim/presentation.html](https://menene.github.io/modsim/presentation.html)
+- 🧭 **Simulador A\***: [https://menene.github.io/modsim/demos/a-star.html](https://menene.github.io/modsim/demos/a-star.html)
+- ⛰️ **Simulador Hill Climbing**: [https://menene.github.io/modsim/demos/hill-climbing.html](https://menene.github.io/modsim/demos/hill-climbing.html)
+- 🌊 **Simulador Flujo MCMF**: [https://menene.github.io/modsim/demos/min-cost-max-flow.html](https://menene.github.io/modsim/demos/min-cost-max-flow.html)
 
 ---
 
@@ -76,10 +95,13 @@ npm test
 .
 ├── index.html                  # Portal principal
 ├── presentation.html           # Diapositivas Reveal.js
-├── README.md                   # Documentación del proyecto
+├── README.md                   # Documentación del proyecto y guía de Pages
 ├── .gitignore                  # Exclusiones de Git
-├── package.json                # Configuración ES Modules y scripts
-├── test.js                     # Suite de pruebas unitarias
+├── package.json                # Configuración ES Modules y scripts de test
+├── test.js                     # Suite de pruebas unitarias (27 tests)
+├── .github/
+│   └── workflows/
+│       └── deploy.yml          # Flujo de CI/CD automatizado para GitHub Pages
 ├── css/
 │   └── styles.css              # Estilos compartidos y temas
 ├── js/
