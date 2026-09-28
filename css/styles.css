@@ -36,13 +36,37 @@ code, pre, .font-mono, .mono {
 
 /* ── Hero Gradient ── */
 .hero-gradient {
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 35%, #312e81 70%, #4338ca 100%);
+  background-color: #0f172a;
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(135deg, #0f172a 0%, #1e1b4b 35%, #312e81 70%, #4338ca 100%);
+  background-size: 24px 24px, 100% 100%;
   position: relative;
 }
 
 .hero-pattern {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-color: #0f172a;
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(135deg, #0f172a 0%, #1e1b4b 35%, #312e81 70%, #4338ca 100%);
+  background-size: 24px 24px, 100% 100%;
+}
+
+/* ── High-Contrast CTA Buttons for Reveal & Portals ── */
+.reveal a.text-white,
+.reveal a.text-slate-100,
+.reveal a.text-slate-200,
+.reveal a[class*="bg-indigo"],
+.reveal a[class*="bg-cyan"],
+.reveal a[class*="bg-slate"] {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.reveal a.text-white:hover,
+.reveal a[class*="bg-indigo"]:hover,
+.reveal a[class*="bg-cyan"]:hover {
+  color: #ffffff !important;
 }
 
 /* ── Glassmorphism ── */

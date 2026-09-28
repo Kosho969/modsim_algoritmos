@@ -129,6 +129,21 @@
     ul.pros li::before { content: '✓ '; color: var(--emerald); font-weight: bold; }
     ul.cons li::before { content: '✗ '; color: var(--rose); font-weight: bold; }
     ul.pros li, ul.cons li { margin: 0.35em 0; font-size: 0.85em; }
+
+    /* Reveal Link Button Contrast Fix */
+    .reveal a.text-white,
+    .reveal a.text-slate-200,
+    .reveal a.btn-cta,
+    .reveal a[class*="bg-indigo"],
+    .reveal a[class*="bg-cyan"],
+    .reveal a[class*="bg-slate"] {
+      color: #ffffff !important;
+      text-decoration: none !important;
+    }
+    .reveal a.text-white:hover,
+    .reveal a[class*="bg-"]:hover {
+      color: #ffffff !important;
+    }
   </style>
 </head>
 <body>
@@ -550,14 +565,14 @@
           </p>
 
           <div class="flex justify-center gap-4">
-            <a href="demos/hill-climbing.html" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
-              <i class="fa-solid fa-mountain"></i> Simulador Hill Climbing
+            <a href="demos/hill-climbing.html" target="_blank" style="color: #ffffff !important;" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
+              <i class="fa-solid fa-mountain text-white"></i> <span style="color: #ffffff !important;">Simulador Hill Climbing</span>
             </a>
-            <a href="demos/a-star.html" target="_blank" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
-              <i class="fa-solid fa-route"></i> Simulador A* Pathfinding
+            <a href="demos/a-star.html" target="_blank" style="color: #ffffff !important;" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
+              <i class="fa-solid fa-route text-white"></i> <span style="color: #ffffff !important;">Simulador A* Pathfinding</span>
             </a>
-            <a href="index.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
-              <i class="fa-solid fa-house"></i> Volver al Portal
+            <a href="index.html" style="color: #ffffff !important;" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+              <i class="fa-solid fa-house text-white"></i> <span style="color: #ffffff !important;">Volver al Portal</span>
             </a>
           </div>
         </div>
