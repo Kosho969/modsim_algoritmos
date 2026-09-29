@@ -31,6 +31,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/atom-one-light.min.css">
+  <!-- KaTeX renders the inline LaTeX used throughout the deck. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
 
   <style>
     :root {
@@ -257,6 +259,35 @@
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════
+           APLICACIÓN: HILL CLIMBING
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="slide-tag">Caso real</span>
+          <span class="text-xs font-semibold text-indigo-700">Hill Climbing</span>
+        </div>
+        <h2>Mejoras locales que sí se usan</h2>
+        <p class="text-slate-500 text-sm mb-4">Funciona cuando evaluar una alternativa es barato y se necesita una buena solución rápidamente.</p>
+        <div class="grid grid-cols-3 gap-3 text-left max-w-5xl">
+          <div class="slide-card border-t-4 border-indigo-500">
+            <div class="text-indigo-600 font-bold text-sm mb-2"><i class="fa-solid fa-tower-cell mr-1"></i> Antenas 4G/5G</div>
+            <p class="text-xs text-slate-600 mb-2">Un operador ajusta inclinación y potencia de cada antena para subir cobertura y bajar congestión.</p>
+            <div class="text-[11px] text-indigo-800 bg-indigo-50 p-2 rounded"><strong>Qué cambia:</strong> inclinación o potencia<br><strong>Mejor resultado:</strong> más cobertura, menos congestión</div>
+          </div>
+          <div class="slide-card border-t-4 border-cyan-500">
+            <div class="text-cyan-700 font-bold text-sm mb-2"><i class="fa-solid fa-chart-line mr-1"></i> Pronóstico de demanda</div>
+            <p class="text-xs text-slate-600 mb-2">Una cadena de supermercados ajusta parámetros de un modelo hasta reducir el error de ventas por tienda.</p>
+            <div class="text-[11px] text-cyan-800 bg-cyan-50 p-2 rounded"><strong>Qué prueba:</strong> cambiar un parámetro<br><strong>Mejor resultado:</strong> menor error de predicción</div>
+          </div>
+          <div class="slide-card border-t-4 border-emerald-500">
+            <div class="text-emerald-700 font-bold text-sm mb-2"><i class="fa-solid fa-boxes-stacked mr-1"></i> Layout de bodega</div>
+            <p class="text-xs text-slate-600 mb-2">Se intercambian dos productos de ubicación si baja la distancia total recorrida por los pickers.</p>
+            <div class="text-[11px] text-emerald-800 bg-emerald-50 p-2 rounded"><strong>Qué prueba:</strong> intercambiar dos productos<br><strong>Mejor resultado:</strong> menos metros por pedido</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
            SLIDE 4: HILL CLIMBING — LOS 3 GRANDES RETOS
       ══════════════════════════════════════════════════════════════ -->
       <section>
@@ -326,6 +357,20 @@
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════
+           APLICACIÓN: SIMULATED ANNEALING
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <div class="flex items-center gap-2 mb-2"><span class="slide-tag">Caso real</span><span class="text-xs font-semibold text-amber-700">Simulated Annealing</span></div>
+        <h2>Cuando conviene aceptar un paso peor</h2>
+        <p class="text-slate-500 text-sm mb-4">Se usa para escapar de soluciones locales en problemas combinatorios gigantes.</p>
+        <div class="grid grid-cols-3 gap-3 text-left max-w-5xl">
+          <div class="slide-card border-t-4 border-amber-500"><div class="text-amber-700 font-bold text-sm mb-2"><i class="fa-solid fa-microchip mr-1"></i> Diseño de chips</div><p class="text-xs text-slate-600 mb-2">Las herramientas EDA colocan bloques de un chip intentando reducir cableado, calor y congestión.</p><div class="text-[11px] text-amber-900 bg-amber-50 p-2 rounded"><strong>Qué prueba:</strong> mover un bloque<br><strong>Éxito:</strong> menos cableado y congestión</div></div>
+          <div class="slide-card border-t-4 border-rose-500"><div class="text-rose-700 font-bold text-sm mb-2"><i class="fa-solid fa-user-doctor mr-1"></i> Turnos hospitalarios</div><p class="text-xs text-slate-600 mb-2">Se intercambian guardias para cubrir cada turno respetando descansos y especialidades.</p><div class="text-[11px] text-rose-900 bg-rose-50 p-2 rounded"><strong>Qué prueba:</strong> intercambiar dos guardias<br><strong>Éxito:</strong> cobertura sin romper reglas</div></div>
+          <div class="slide-card border-t-4 border-indigo-500"><div class="text-indigo-700 font-bold text-sm mb-2"><i class="fa-solid fa-truck-fast mr-1"></i> Rutas de reparto</div><p class="text-xs text-slate-600 mb-2">En una ruta de entregas, se invierte un tramo aunque empeore al inicio para evitar un tour mucho peor.</p><div class="text-[11px] text-indigo-900 bg-indigo-50 p-2 rounded"><strong>Qué prueba:</strong> invertir parte de la ruta<br><strong>Éxito:</strong> menos kilómetros y retrasos</div></div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
            SLIDE 6: DEMO EN VIVO HILL CLIMBING
       ══════════════════════════════════════════════════════════════ -->
       <section>
@@ -387,6 +432,20 @@
             <div class="font-bold text-xs text-emerald-900">f(n) = Costo Total Estimado</div>
             <p class="text-xs text-slate-600 mt-1 mb-0">Costo proyectado del camino óptimo completo pasando a través de $n$.</p>
           </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           APLICACIÓN: A*
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <div class="flex items-center gap-2 mb-2"><span class="slide-tag">Caso real</span><span class="text-xs font-semibold text-cyan-700">A*</span></div>
+        <h2>El camino óptimo con una meta clara</h2>
+        <p class="text-slate-500 text-sm mb-4">A* combina costo recorrido y distancia restante: ideal cuando hay mapa, obstáculos y una meta precisa.</p>
+        <div class="grid grid-cols-3 gap-3 text-left max-w-5xl">
+          <div class="slide-card border-t-4 border-cyan-500"><div class="text-cyan-700 font-bold text-sm mb-2"><i class="fa-solid fa-robot mr-1"></i> Robot de almacén</div><p class="text-xs text-slate-600 mb-2">Un AMR va del estante A-17 al muelle 4 evitando pasillos bloqueados y zonas de alta prioridad.</p><div class="text-[11px] text-cyan-900 bg-cyan-50 p-2 rounded"><strong>Compara:</strong> camino ya recorrido + distancia que falta<br><strong>Elige:</strong> el siguiente paso más prometedor</div></div>
+          <div class="slide-card border-t-4 border-indigo-500"><div class="text-indigo-700 font-bold text-sm mb-2"><i class="fa-solid fa-gamepad mr-1"></i> NPC en videojuegos</div><p class="text-xs text-slate-600 mb-2">Un personaje busca al jugador dentro de un mapa con puertas, muros y zonas que cuestan más atravesar.</p><div class="text-[11px] text-indigo-900 bg-indigo-50 p-2 rounded"><strong>Mapa:</strong> celdas y obstáculos<br><strong>Éxito:</strong> llegar con el menor costo</div></div>
+          <div class="slide-card border-t-4 border-emerald-500"><div class="text-emerald-700 font-bold text-sm mb-2"><i class="fa-solid fa-hospital mr-1"></i> Entrega hospitalaria</div><p class="text-xs text-slate-600 mb-2">Un robot transporta medicinas entre farmacia y UCI evitando ascensores ocupados o pasillos cerrados.</p><div class="text-[11px] text-emerald-900 bg-emerald-50 p-2 rounded"><strong>Evita:</strong> esperas y pasillos cerrados<br><strong>Éxito:</strong> llegada más rápida</div></div>
         </div>
       </section>
 
@@ -498,6 +557,34 @@
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════
+           APLICACIÓN: DIJKSTRA
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <div class="flex items-center gap-2 mb-2"><span class="slide-tag">Caso real</span><span class="text-xs font-semibold text-indigo-700">Dijkstra</span></div>
+        <h2>La base del enrutamiento de Internet</h2>
+        <p class="text-slate-500 text-sm mb-4">Cuando todos los costos son no negativos, Dijkstra encuentra la ruta mínima sin depender de una heurística.</p>
+        <div class="grid grid-cols-3 gap-3 text-left max-w-5xl">
+          <div class="slide-card border-t-4 border-indigo-500"><div class="text-indigo-700 font-bold text-sm mb-2"><i class="fa-solid fa-network-wired mr-1"></i> Routers OSPF</div><p class="text-xs text-slate-600 mb-2">Routers empresariales y de ISP construyen el árbol de rutas de menor costo con el algoritmo SPF de Dijkstra.</p><div class="text-[11px] text-indigo-900 bg-indigo-50 p-2 rounded"><strong>Compara:</strong> todas las rutas disponibles<br><strong>Elige:</strong> la ruta de menor costo</div></div>
+          <div class="slide-card border-t-4 border-cyan-500"><div class="text-cyan-700 font-bold text-sm mb-2"><i class="fa-solid fa-train-subway mr-1"></i> Red de metro</div><p class="text-xs text-slate-600 mb-2">Una app calcula el itinerario de menor tiempo entre estaciones incluyendo el costo de cada transbordo.</p><div class="text-[11px] text-cyan-900 bg-cyan-50 p-2 rounded"><strong>Compara:</strong> minutos de cada alternativa<br><strong>Elige:</strong> el trayecto más rápido</div></div>
+          <div class="slide-card border-t-4 border-emerald-500"><div class="text-emerald-700 font-bold text-sm mb-2"><i class="fa-solid fa-fiber mr-1"></i> Fibra óptica</div><p class="text-xs text-slate-600 mb-2">Un operador elige una ruta de respaldo de menor latencia entre dos centros de datos.</p><div class="text-[11px] text-emerald-900 bg-emerald-50 p-2 rounded">Costo: latencia o tarifa por enlace<br>Restricción: enlaces disponibles</div></div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           APLICACIÓN: GREEDY BEST-FIRST
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <div class="flex items-center gap-2 mb-2"><span class="slide-tag">Caso real</span><span class="text-xs font-semibold text-cyan-700">Greedy Best-First</span></div>
+        <h2>Velocidad primero; optimalidad después</h2>
+        <p class="text-slate-500 text-sm mb-4">Es útil cuando una respuesta inmediata vale más que probar la ruta óptima.</p>
+        <div class="grid grid-cols-3 gap-3 text-left max-w-5xl">
+          <div class="slide-card border-t-4 border-cyan-500"><div class="text-cyan-700 font-bold text-sm mb-2"><i class="fa-solid fa-gamepad mr-1"></i> Enemigo de videojuego</div><p class="text-xs text-slate-600 mb-2">Un NPC persigue al jugador priorizando siempre la celda que parece más cercana a su posición.</p><div class="text-[11px] text-cyan-900 bg-cyan-50 p-2 rounded"><strong>Decide con:</strong> quién parece más cerca<br><strong>Ventaja:</strong> responde rápido, aunque se equivoque</div></div>
+          <div class="slide-card border-t-4 border-amber-500"><div class="text-amber-700 font-bold text-sm mb-2"><i class="fa-solid fa-drone-front mr-1"></i> Dron de inspección</div><p class="text-xs text-slate-600 mb-2">Para una revisión urgente, el dron toma el siguiente punto de inspección más cercano antes de refinar su plan.</p><div class="text-[11px] text-amber-900 bg-amber-50 p-2 rounded"><strong>Decide con:</strong> distancia aérea<br><strong>Riesgo:</strong> puede terminar dando rodeos</div></div>
+          <div class="slide-card border-t-4 border-rose-500"><div class="text-rose-700 font-bold text-sm mb-2"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Respuesta a incidentes</div><p class="text-xs text-slate-600 mb-2">Un operador genera una primera ruta hacia una alarma para reaccionar, luego la reemplaza por una más completa.</p><div class="text-[11px] text-rose-900 bg-rose-50 p-2 rounded">Objetivo: primera solución viable<br>No garantiza la mejor ruta</div></div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
            SLIDE 11: DEMO EN VIVO A*
       ══════════════════════════════════════════════════════════════ -->
       <section>
@@ -592,6 +679,20 @@
       </section>
 
       <!-- ══════════════════════════════════════════════════════════════
+           APLICACIÓN: FLUJO MÁXIMO
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <div class="flex items-center gap-2 mb-2"><span class="slide-tag">Caso real</span><span class="text-xs font-semibold text-rose-700">Flujo Máximo</span></div>
+        <h2>¿Cuánto puede pasar sin violar capacidades?</h2>
+        <p class="text-slate-500 text-sm mb-4">Max-Flow mide el límite físico de una red, antes de decidir cuánto cuesta usarla.</p>
+        <div class="grid grid-cols-3 gap-3 text-left max-w-5xl">
+          <div class="slide-card border-t-4 border-rose-500"><div class="text-rose-700 font-bold text-sm mb-2"><i class="fa-solid fa-person-walking-arrow-right mr-1"></i> Evacuación de estadio</div><p class="text-xs text-slate-600 mb-2">Se estima cuántas personas por minuto pueden salir si cada pasillo, escalera y puerta tiene un aforo.</p><div class="text-[11px] text-rose-900 bg-rose-50 p-2 rounded"><strong>Límite:</strong> personas por minuto por salida<br><strong>Busca:</strong> dónde está el cuello de botella</div></div>
+          <div class="slide-card border-t-4 border-cyan-500"><div class="text-cyan-700 font-bold text-sm mb-2"><i class="fa-solid fa-signal mr-1"></i> Red de datos</div><p class="text-xs text-slate-600 mb-2">Un proveedor calcula el máximo tráfico entre dos nodos sin exceder el ancho de banda de sus enlaces.</p><div class="text-[11px] text-cyan-900 bg-cyan-50 p-2 rounded"><strong>Límite:</strong> Gbps por enlace<br><strong>Resultado:</strong> máximo tráfico entregable</div></div>
+          <div class="slide-card border-t-4 border-emerald-500"><div class="text-emerald-700 font-bold text-sm mb-2"><i class="fa-solid fa-droplet mr-1"></i> Red de agua</div><p class="text-xs text-slate-600 mb-2">Una ciudad evalúa el caudal máximo que puede llevar desde una planta hasta un sector de la red.</p><div class="text-[11px] text-emerald-900 bg-emerald-50 p-2 rounded">Capacidad: litros/segundo<br>Cuello: tubería o válvula crítica</div></div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
            SLIDE 14: SUCCESSIVE SHORTEST PATH (MCMF)
       ══════════════════════════════════════════════════════════════ -->
       <section>
@@ -625,6 +726,20 @@
         AUGMENT-FLOW(path, delta)
     return total_flow, total_cost</code></pre>
           </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════
+           APLICACIÓN: MCMF
+      ══════════════════════════════════════════════════════════════ -->
+      <section>
+        <div class="flex items-center gap-2 mb-2"><span class="slide-tag">Caso real</span><span class="text-xs font-semibold text-emerald-700">Flujo de Costo Mínimo</span></div>
+        <h2>Entregar todo al menor costo posible</h2>
+        <p class="text-slate-500 text-sm mb-4">MCMF combina límites de capacidad con costos por ruta para asignar recursos de forma eficiente.</p>
+        <div class="grid grid-cols-3 gap-3 text-left max-w-5xl">
+          <div class="slide-card border-t-4 border-emerald-500"><div class="text-emerald-700 font-bold text-sm mb-2"><i class="fa-solid fa-warehouse mr-1"></i> Reposición de tiendas</div><p class="text-xs text-slate-600 mb-2">Se decide cuántas cajas enviar de cada centro de distribución a cada tienda, sin exceder inventario ni camiones.</p><div class="text-[11px] text-emerald-900 bg-emerald-50 p-2 rounded"><strong>Decide:</strong> cuántas cajas manda cada ruta<br><strong>Éxito:</strong> cubrir demanda con menor flete</div></div>
+          <div class="slide-card border-t-4 border-amber-500"><div class="text-amber-700 font-bold text-sm mb-2"><i class="fa-solid fa-truck-plane mr-1"></i> Carga multimodal</div><p class="text-xs text-slate-600 mb-2">Un envío puede ir por camión, tren o avión; el algoritmo asigna volumen según costo, cupo y tiempo disponible.</p><div class="text-[11px] text-amber-900 bg-amber-50 p-2 rounded"><strong>Decide:</strong> cuánto va por cada medio<br><strong>Respeta:</strong> cupo, costo y tiempo</div></div>
+          <div class="slide-card border-t-4 border-indigo-500"><div class="text-indigo-700 font-bold text-sm mb-2"><i class="fa-solid fa-taxi mr-1"></i> Asignación de viajes</div><p class="text-xs text-slate-600 mb-2">Una plataforma empareja conductores y solicitudes limitando cada conductor a un viaje y minimizando tiempo de llegada.</p><div class="text-[11px] text-indigo-900 bg-indigo-50 p-2 rounded">Flujo: asignaciones<br>Costo: minutos hasta el pasajero</div></div>
         </div>
       </section>
 
@@ -723,6 +838,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/notes/notes.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"></script>
 
   <!-- Interactive Slide Mini-Widgets Module -->
   <script type="module">
@@ -738,6 +855,20 @@
       center: true,
       transition: 'slide',
       plugins: [ RevealHighlight, RevealNotes ]
+    });
+
+    // Convert the existing $...$ notation to accessible KaTeX output once the
+    // deck has been parsed. Dynamic currency labels are written after this and
+    // remain ordinary text.
+    renderMathInElement(document.querySelector('.reveal .slides'), {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      throwOnError: false
     });
 
     // 1. Embedded Slide Hill Climbing Mini-Visualizer
